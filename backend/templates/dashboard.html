@@ -4,46 +4,177 @@
 
 {% block content %}
 
-<h2 class="mb-4">Dashboard</h2>
+<h2 class="mb-4">ERP Dashboard</h2>
 
-<div class="row">
+<div class="row g-4">
 
-<div class="col-md-3">
-<div class="card shadow">
-<div class="card-body text-center">
-<h5>Total Assets</h5>
-<h2>{{ total_assets }}</h2>
-</div>
-</div>
+    <div class="col-md-3">
+        <div class="card shadow border-0">
+            <div class="card-body text-center">
+                <h6>Total Assets</h6>
+                <h2>{{ total_assets }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow border-0">
+            <div class="card-body text-center">
+                <h6>Available</h6>
+                <h2>{{ available }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow border-0">
+            <div class="card-body text-center">
+                <h6>Allocated</h6>
+                <h2>{{ allocated }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow border-0">
+            <div class="card-body text-center">
+                <h6>Maintenance</h6>
+                <h2>{{ maintenance }}</h2>
+            </div>
+        </div>
+    </div>
+
 </div>
 
-<div class="col-md-3">
-<div class="card shadow">
-<div class="card-body text-center">
-<h5>Available</h5>
-<h2>{{ available }}</h2>
-</div>
-</div>
-</div>
+<br>
 
-<div class="col-md-3">
-<div class="card shadow">
-<div class="card-body text-center">
-<h5>Allocated</h5>
-<h2>{{ allocated }}</h2>
-</div>
-</div>
-</div>
+<div class="card shadow border-0">
 
-<div class="col-md-3">
-<div class="card shadow">
-<div class="card-body text-center">
-<h5>Maintenance</h5>
-<h2>{{ maintenance }}</h2>
-</div>
-</div>
-</div>
+    <div class="card-header bg-primary text-white">
+        Asset Statistics
+    </div>
+
+    <div class="card-body">
+
+        <canvas id="assetChart" height="100"></canvas>
+
+    </div>
 
 </div>
+
+<br>
+
+<div class="card shadow border-0">
+
+    <div class="card-header bg-dark text-white">
+        Asset Status Summary
+    </div>
+
+    <div class="card-body">
+
+        <table class="table table-striped">
+
+            <thead>
+
+            <tr>
+                <th>Status</th>
+                <th>Total</th>
+            </tr>
+
+            </thead>
+
+            <tbody>
+
+            <tr>
+                <td>Available</td>
+                <td>{{ available }}</td>
+            </tr>
+
+            <tr>
+                <td>Allocated</td>
+                <td>{{ allocated }}</td>
+            </tr>
+
+            <tr>
+                <td>Under Maintenance</td>
+                <td>{{ maintenance }}</td>
+            </tr>
+
+            <tr>
+                <td>Total Assets</td>
+                <td>{{ total_assets }}</td>
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const ctx = document.getElementById("assetChart");
+
+    new Chart(ctx, {
+
+        type: "bar",
+
+        data: {
+
+            labels: [
+                "Available",
+                "Allocated",
+                "Maintenance"
+            ],
+
+            datasets: [{
+
+                label: "Assets",
+
+                data: [
+                    {{ available }},
+                    {{ allocated }},
+                    {{ maintenance }}
+                ]
+
+            }]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            plugins: {
+
+                legend: {
+
+                    display: false
+
+                }
+
+            },
+
+            scales: {
+
+                y: {
+
+                    beginAtZero: true
+
+                }
+
+            }
+
+        }
+
+    });
+
+});
+
+</script>
 
 {% endblock %}

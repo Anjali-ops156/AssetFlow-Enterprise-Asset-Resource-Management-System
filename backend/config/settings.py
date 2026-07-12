@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "maintenance",
     "dashboard",
     "reports",
+    'bookings',
 ]
 
 MIDDLEWARE = [
