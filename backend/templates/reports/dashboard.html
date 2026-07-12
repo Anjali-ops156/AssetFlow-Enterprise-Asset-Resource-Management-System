@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Reports{% endblock %}
+
+{% block content %}
+
+<h2 class="mb-4">Reports & Analytics</h2>
+
+<div class="row">
+
+    <div class="col-md-4">
+        <div class="card shadow">
+            <div class="card-body text-center">
+                <h5>Total Assets</h5>
+                <h2>{{ total_assets }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow">
+            <div class="card-body text-center">
+                <h5>Allocated</h5>
+                <h2>{{ allocated }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow">
+            <div class="card-body text-center">
+                <h5>Available</h5>
+                <h2>{{ available }}</h2>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row mt-4">
+
+    <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-body text-center">
+                <h5>Maintenance Requests</h5>
+                <h2>{{ maintenance }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-body text-center">
+                <h5>Total Bookings</h5>
+                <h2>{{ bookings }}</h2>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
