@@ -1,6 +1,9 @@
 from django.urls import path
-from .views import maintenance_list
+from . import views
 
 urlpatterns = [
-    path("", maintenance_list, name="maintenance_list"),
+    path("", views.maintenance_list, name="maintenance_list"),
+    path("raise/", views.raise_request, name="raise_request"),
+    path("approve/<int:pk>/", views.approve_request, name="approve_request"),
+    path("resolve/<int:pk>/", views.resolve_request, name="resolve_request"),
 ]

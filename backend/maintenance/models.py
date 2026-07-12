@@ -9,7 +9,6 @@ class MaintenanceRequest(models.Model):
         ("Low", "Low"),
         ("Medium", "Medium"),
         ("High", "High"),
-        ("Critical", "Critical"),
     ]
 
     STATUS_CHOICES = [
@@ -34,39 +33,36 @@ class MaintenanceRequest(models.Model):
     issue = models.TextField()
 
     priority = models.CharField(
-        max_length=20,
+        max_length=10,
         choices=PRIORITY_CHOICES,
-        default="Medium"
+        default="Medium",
     )
 
     status = models.CharField(
         max_length=30,
         choices=STATUS_CHOICES,
-        default="Pending"
+        default="Pending",
     )
 
-    technician = models.ForeignKey(
-        User,
-        on_delete=models.SET_NULL,
-        null=True,
+    technician = models.CharField(
+        max_length=100,
         blank=True,
-        related_name="assigned_repairs"
+        null=True,
     )
 
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    resolved_at = models.DateTimeField(
+    photo = models.ImageField(
+        upload_to="maintenance/",
+        blank=True,
         null=True,
-        blank=True
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
     )
 
     def save(self, *args, **kwargs):
 
-        if self.status in [
-            "Approved",
-            "Technician Assigned",
-            "In Progress",
-        ]:
+        if self.status == "Approved":
             self.asset.status = "Under Maintenance"
 
         elif self.status == "Resolved":

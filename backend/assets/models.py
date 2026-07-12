@@ -23,7 +23,11 @@ class Asset(models.Model):
         ("Damaged", "Damaged"),
     ]
 
-    asset_tag = models.CharField(max_length=20, unique=True)
+    asset_tag = models.CharField(
+        max_length=20,
+        unique=True,
+        blank=True
+    )
     name = models.CharField(max_length=150)
 
     category = models.ForeignKey(
@@ -71,6 +75,26 @@ class Asset(models.Model):
         blank=True,
         null=True
     )
+
+    def save(self, *args, **kwargs):
+
+        if not self.asset_tag:
+
+            last_asset = Asset.objects.order_by("id").last()
+
+            if last_asset:
+
+                try:
+                    last_id = int(last_asset.asset_tag.split("-")[1])
+                except (IndexError, ValueError):
+                    last_id = last_asset.id
+
+                self.asset_tag = f"AF-{last_id + 1:04d}"
+
+            else:
+                self.asset_tag = "AF-0001"
+
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.asset_tag} - {self.name}"

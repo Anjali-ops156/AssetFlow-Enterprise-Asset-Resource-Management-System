@@ -2,52 +2,179 @@
 
 {% block title %}Organization Setup{% endblock %}
 
+{% block extra_head %}
+<style>
+    .page-head {
+        margin-bottom: 1.75rem;
+    }
+    .page-head .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        letter-spacing: 0.06em;
+        color: var(--accent);
+        background: var(--accent-soft);
+        border: 1px solid var(--accent-dim);
+        padding: 0.3rem 0.65rem;
+        border-radius: 999px;
+        margin-bottom: 0.75rem;
+    }
+    .page-head h2 {
+        font-size: 1.6rem;
+        font-weight: 700;
+        margin: 0;
+    }
+    .page-head p {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        margin-top: 0.3rem;
+    }
+
+    /* ---------- Tabs ---------- */
+    .org-tabs {
+        display: flex;
+        gap: 0.4rem;
+        border-bottom: 1px solid var(--border);
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+    }
+    .org-tabs .nav-item { list-style: none; }
+    .org-tabs .nav-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: transparent;
+        border: none;
+        color: var(--text-faint);
+        font-family: var(--font-body);
+        font-weight: 600;
+        font-size: 0.9rem;
+        padding: 0.75rem 1.1rem;
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        transition: color 0.15s ease, border-color 0.15s ease;
+    }
+    .org-tabs .nav-link:hover { color: var(--text-main); }
+    .org-tabs .nav-link.active {
+        color: var(--accent);
+        border-bottom-color: var(--accent);
+    }
+
+    /* ---------- Table ---------- */
+    .table-wrap {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        overflow: hidden;
+    }
+    .table-wrap table {
+        width: 100%;
+        border: none;
+        border-radius: 0;
+        border-collapse: collapse;
+    }
+    .table-wrap thead th {
+        background: var(--surface-2);
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--text-faint);
+        padding: 0.85rem 1.1rem;
+        text-align: left;
+    }
+    .table-wrap tbody td {
+        padding: 0.85rem 1.1rem;
+        color: var(--text-main);
+        font-size: 0.9rem;
+    }
+    .table-wrap tbody tr {
+        border-top: 1px solid var(--border);
+        transition: background-color 0.15s;
+    }
+    .table-wrap tbody tr:hover {
+        background: var(--bg-soft);
+    }
+    .empty-row td {
+        text-align: center;
+        color: var(--text-faint);
+        padding: 2.5rem 1rem;
+        font-family: var(--font-mono);
+        font-size: 0.85rem;
+    }
+
+    .status-badge{
+        display:inline-flex;
+        align-items:center;
+        gap:0.4rem;
+        font-family:var(--font-mono);
+        font-size:0.75rem;
+        padding:0.28rem 0.65rem;
+        border-radius:999px;
+        border:1px solid;
+        white-space:nowrap;
+    }
+    .status-badge::before{
+        content:"";
+        width:6px; height:6px;
+        border-radius:50%;
+        background:currentColor;
+    }
+    .badge-active{ color: var(--ok); background: var(--ok-soft); border-color: rgba(52,211,153,0.4); }
+</style>
+{% endblock %}
+
 {% block content %}
 
-<div class="container-fluid">
+<div class="page-head">
+    <div class="eyebrow"><span>ORGANIZATION</span></div>
+    <h2>Organization Setup</h2>
+    <p>Manage departments, asset categories, and employees.</p>
+</div>
 
-    <h2 class="mb-4">Organization Setup</h2>
+<ul class="nav org-tabs" id="orgTabs" role="tablist">
 
-    <ul class="nav nav-tabs mb-4" id="orgTabs" role="tablist">
+    <li class="nav-item">
+        <button class="nav-link active"
+                data-bs-toggle="tab"
+                data-bs-target="#departments">
+            Departments
+        </button>
+    </li>
 
-        <li class="nav-item">
-            <button class="nav-link active"
-                    data-bs-toggle="tab"
-                    data-bs-target="#departments">
-                Departments
-            </button>
-        </li>
+    <li class="nav-item">
+        <button class="nav-link"
+                data-bs-toggle="tab"
+                data-bs-target="#categories">
+            Asset Categories
+        </button>
+    </li>
 
-        <li class="nav-item">
-            <button class="nav-link"
-                    data-bs-toggle="tab"
-                    data-bs-target="#categories">
-                Asset Categories
-            </button>
-        </li>
+    <li class="nav-item">
+        <button class="nav-link"
+                data-bs-toggle="tab"
+                data-bs-target="#employees">
+            Employees
+        </button>
+    </li>
 
-        <li class="nav-item">
-            <button class="nav-link"
-                    data-bs-toggle="tab"
-                    data-bs-target="#employees">
-                Employees
-            </button>
-        </li>
+</ul>
 
-    </ul>
+<div class="tab-content">
 
-    <div class="tab-content">
+    <!-- ========================= -->
+    <!-- Departments -->
+    <!-- ========================= -->
 
-        <!-- ========================= -->
-        <!-- Departments -->
-        <!-- ========================= -->
+    <div class="tab-pane fade show active"
+         id="departments">
 
-        <div class="tab-pane fade show active"
-             id="departments">
+        <div class="table-wrap">
+            <table>
 
-            <table class="table table-striped table-bordered">
-
-                <thead class="table-dark">
+                <thead>
                     <tr>
                         <th>Name</th>
                         <th>Head</th>
@@ -62,12 +189,12 @@
                     <tr>
                         <td>{{ department.name }}</td>
                         <td>{{ department.head }}</td>
-                        <td>Active</td>
+                        <td><span class="status-badge badge-active">Active</span></td>
                     </tr>
 
                 {% empty %}
 
-                    <tr>
+                    <tr class="empty-row">
                         <td colspan="3">
                             No Departments
                         </td>
@@ -78,19 +205,21 @@
                 </tbody>
 
             </table>
-
         </div>
 
-        <!-- ========================= -->
-        <!-- Categories -->
-        <!-- ========================= -->
+    </div>
 
-        <div class="tab-pane fade"
-             id="categories">
+    <!-- ========================= -->
+    <!-- Categories -->
+    <!-- ========================= -->
 
-            <table class="table table-striped table-bordered">
+    <div class="tab-pane fade"
+         id="categories">
 
-                <thead class="table-dark">
+        <div class="table-wrap">
+            <table>
+
+                <thead>
                     <tr>
                         <th>Name</th>
                     </tr>
@@ -106,7 +235,7 @@
 
                 {% empty %}
 
-                    <tr>
+                    <tr class="empty-row">
                         <td>No Categories</td>
                     </tr>
 
@@ -115,19 +244,21 @@
                 </tbody>
 
             </table>
-
         </div>
 
-        <!-- ========================= -->
-        <!-- Employees -->
-        <!-- ========================= -->
+    </div>
 
-        <div class="tab-pane fade"
-             id="employees">
+    <!-- ========================= -->
+    <!-- Employees -->
+    <!-- ========================= -->
 
-            <table class="table table-striped table-bordered">
+    <div class="tab-pane fade"
+         id="employees">
 
-                <thead class="table-dark">
+        <div class="table-wrap">
+            <table>
+
+                <thead>
 
                     <tr>
 
@@ -155,7 +286,7 @@
 
                 {% empty %}
 
-                    <tr>
+                    <tr class="empty-row">
 
                         <td colspan="4">
                             No Employees
@@ -168,7 +299,6 @@
                 </tbody>
 
             </table>
-
         </div>
 
     </div>

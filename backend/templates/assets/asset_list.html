@@ -4,169 +4,311 @@
 
 {% block extra_head %}
 <style>
-    .page-head{
-        display:flex;
-        align-items:flex-start;
-        justify-content:space-between;
-        flex-wrap:wrap;
-        gap:1rem;
-        margin-bottom:1.75rem;
+    .page-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 1.75rem;
     }
-    .page-head .eyebrow{
-        display:inline-flex; align-items:center; gap:0.5rem;
-        font-family:var(--font-mono);
-        font-size:0.7rem;
-        letter-spacing:0.06em;
-        color:var(--accent);
-        background:var(--accent-soft);
-        border:1px solid var(--accent-dim);
-        padding:0.3rem 0.65rem;
-        border-radius:999px;
-        margin-bottom:0.75rem;
+
+    .page-head .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        letter-spacing: 0.06em;
+        color: var(--accent);
+        background: var(--accent-soft);
+        border: 1px solid var(--accent-dim);
+        padding: 0.3rem 0.65rem;
+        border-radius: 999px;
+        margin-bottom: 0.75rem;
     }
-    .page-head h2{
-        font-size:1.6rem;
-        font-weight:700;
-        margin:0;
+
+    .page-head h2 {
+        font-size: 1.6rem;
+        font-weight: 700;
+        margin: 0;
     }
-    .page-head p{
-        color:var(--text-muted);
-        font-size:0.9rem;
-        margin-top:0.3rem;
+
+    .page-head p {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        margin-top: 0.3rem;
     }
+
+    .page-head-actions {
+        display: flex;
+        gap: 0.65rem;
+        flex-wrap: wrap;
+        align-self: flex-start;
+    }
+
+    .action-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.65rem 1.1rem;
+        border-radius: 9px;
+        font-family: var(--font-body);
+        font-size: 0.88rem;
+        font-weight: 600;
+        text-decoration: none;
+        border: 1px solid transparent;
+        white-space: nowrap;
+        transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+    }
+    .action-btn:hover { transform: translateY(-1px); }
+    .action-btn svg { width: 15px; height: 15px; stroke: currentColor; flex-shrink: 0; }
+
+    .action-btn.solid {
+        background: var(--accent);
+        color: #1a1305;
+        box-shadow: 0 6px 18px -6px rgba(232,163,61,0.5);
+    }
+    .action-btn.solid:hover { background: #f0ad4d; }
+
+    .action-btn.outline {
+        background: var(--accent-soft);
+        color: var(--accent);
+        border-color: var(--accent-dim);
+    }
+    .action-btn.outline:hover { border-color: var(--accent); }
 
     /* ---------- Filter bar ---------- */
-    .filter-bar{
-        display:grid;
-        grid-template-columns:1fr;
-        gap:0.75rem;
-        background:var(--surface);
-        border:1px solid var(--border);
-        border-radius:var(--radius);
-        padding:1.1rem;
-        margin-bottom:1.5rem;
-    }
-    @media (min-width:720px){
-        .filter-bar{ grid-template-columns:1fr 220px auto; align-items:center; }
+    .filter-bar {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 1.1rem;
+        margin-bottom: 1.5rem;
     }
 
-    .field-shell{ position:relative; }
-    .field-shell svg{
-        position:absolute;
-        left:0.85rem; top:50%;
-        transform:translateY(-50%);
-        width:16px; height:16px;
-        stroke:var(--text-faint);
-        pointer-events:none;
+    @media (min-width:720px) {
+        .filter-bar {
+            grid-template-columns: 1fr 220px 220px auto;
+            align-items: center;
+        }
     }
-    .filter-bar input[type="text"]{
-        width:100%;
-        background:var(--bg-soft);
-        border:1px solid var(--border-strong);
-        color:var(--text-main);
-        font-family:var(--font-body);
-        font-size:0.92rem;
-        padding:0.7rem 0.85rem 0.7rem 2.4rem;
-        border-radius:9px;
-        transition:border-color 0.18s, box-shadow 0.18s;
+
+    .field-shell {
+        position: relative;
     }
-    .filter-bar select{
-        width:100%;
-        background:var(--bg-soft);
-        border:1px solid var(--border-strong);
-        color:var(--text-main);
-        font-family:var(--font-body);
-        font-size:0.92rem;
-        padding:0.7rem 0.85rem;
-        border-radius:9px;
-        appearance:none;
-        -webkit-appearance:none;
-        background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238c96ab' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-        background-repeat:no-repeat;
-        background-position:right 0.75rem center;
-        padding-right:2.25rem;
+
+    .field-shell svg {
+        position: absolute;
+        left: 0.85rem;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 16px;
+        height: 16px;
+        stroke: var(--text-faint);
+        pointer-events: none;
     }
+
+    .filter-bar input[type="text"] {
+        width: 100%;
+        background: var(--bg-soft);
+        border: 1px solid var(--border-strong);
+        color: var(--text-main);
+        font-family: var(--font-body);
+        font-size: 0.92rem;
+        padding: 0.7rem 0.85rem 0.7rem 2.4rem;
+        border-radius: 9px;
+        transition: border-color 0.18s, box-shadow 0.18s;
+    }
+
+    .filter-bar select {
+        width: 100%;
+        background: var(--bg-soft);
+        border: 1px solid var(--border-strong);
+        color: var(--text-main);
+        font-family: var(--font-body);
+        font-size: 0.92rem;
+        padding: 0.7rem 0.85rem;
+        border-radius: 9px;
+        appearance: none;
+        -webkit-appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238c96ab' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 0.75rem center;
+        padding-right: 2.25rem;
+    }
+
     .filter-bar input:focus,
-    .filter-bar select:focus{
-        outline:none;
-        border-color:var(--accent-dim);
-        box-shadow:0 0 0 3px var(--accent-soft);
+    .filter-bar select:focus {
+        outline: none;
+        border-color: var(--accent-dim);
+        box-shadow: 0 0 0 3px var(--accent-soft);
     }
-    .filter-bar button{
-        display:flex; align-items:center; justify-content:center; gap:0.5rem;
-        background:var(--accent);
-        color:#1a1305;
-        border:none;
-        font-family:var(--font-body);
-        font-weight:600;
-        font-size:0.9rem;
-        padding:0.72rem 1.3rem;
-        border-radius:9px;
-        cursor:pointer;
-        white-space:nowrap;
-        box-shadow:0 6px 18px -6px rgba(232,163,61,0.5);
-        transition:background-color 0.18s, transform 0.18s;
+
+    .filter-bar button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        background: var(--accent);
+        color: #1a1305;
+        border: none;
+        font-family: var(--font-body);
+        font-weight: 600;
+        font-size: 0.9rem;
+        padding: 0.72rem 1.3rem;
+        border-radius: 9px;
+        cursor: pointer;
+        white-space: nowrap;
+        box-shadow: 0 6px 18px -6px rgba(232, 163, 61, 0.5);
+        transition: background-color 0.18s, transform 0.18s;
     }
-    .filter-bar button:hover{ background:#f0ad4d; transform:translateY(-1px); }
+
+    .filter-bar button:hover {
+        background: #f0ad4d;
+        transform: translateY(-1px);
+    }
 
     /* ---------- Table ---------- */
-    .table-wrap{
-        background:var(--surface);
-        border:1px solid var(--border);
-        border-radius:var(--radius);
-        overflow:hidden;
+    .table-wrap {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        overflow: hidden;
     }
-    .table-wrap table{ border:none; border-radius:0; }
-    .table-wrap thead th{
-        background:var(--surface-2);
+
+    .table-wrap table {
+        border: none;
+        border-radius: 0;
+        width: 100%;
     }
-    .table-wrap tbody tr{
-        transition:background-color 0.15s;
+
+    .table-wrap thead th {
+        background: var(--surface-2);
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--text-faint);
+        padding: 0.85rem 1.1rem;
+        text-align: left;
     }
-    .table-wrap tbody tr:hover{
-        background:var(--bg-soft);
+
+    .table-wrap tbody td {
+        padding: 0.85rem 1.1rem;
     }
-    .table-wrap td, .table-wrap th{
-        vertical-align:middle;
+
+    .table-wrap tbody tr {
+        transition: background-color 0.15s;
+        border-top: 1px solid var(--border);
     }
-    .empty-row td{
-        text-align:center;
-        color:var(--text-faint);
-        padding:2.5rem 1rem;
-        font-family:var(--font-mono);
-        font-size:0.85rem;
+
+    .table-wrap tbody tr:hover {
+        background: var(--bg-soft);
+    }
+
+    .table-wrap td,
+    .table-wrap th {
+        vertical-align: middle;
+    }
+
+    .table-wrap tbody a {
+        color: var(--accent);
+        text-decoration: none;
+        font-weight: 600;
+    }
+    .table-wrap tbody a:hover { text-decoration: underline; }
+
+    .view-link {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.35rem 0.85rem;
+        border-radius: 999px;
+        background: var(--accent-soft);
+        border: 1px solid var(--accent-dim);
+        font-size: 0.78rem;
+        font-weight: 600;
+    }
+    .view-link:hover { text-decoration: none !important; border-color: var(--accent); }
+
+    .empty-row td {
+        text-align: center;
+        color: var(--text-faint);
+        padding: 2.5rem 1rem;
+        font-family: var(--font-mono);
+        font-size: 0.85rem;
     }
 
     /* Status badges */
-    .status-badge{
-        display:inline-flex;
-        align-items:center;
-        gap:0.4rem;
-        font-family:var(--font-mono);
-        font-size:0.75rem;
-        padding:0.28rem 0.65rem;
-        border-radius:999px;
-        border:1px solid;
-        white-space:nowrap;
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        padding: 0.28rem 0.65rem;
+        border-radius: 999px;
+        border: 1px solid;
+        white-space: nowrap;
     }
-    .status-badge::before{
-        content:"";
-        width:6px; height:6px;
-        border-radius:50%;
-        background:currentColor;
-    }
-    .badge-available{ color:var(--ok); background:var(--ok-soft); border-color:rgba(52,211,153,0.4); }
-    .badge-allocated{ color:var(--accent); background:var(--accent-soft); border-color:var(--accent-dim); }
-    .badge-reserved{ color:#5aa9e6; background:rgba(90,169,230,0.14); border-color:rgba(90,169,230,0.4); }
-    .badge-under-maintenance{ color:var(--danger); background:var(--danger-soft); border-color:rgba(241,102,95,0.4); }
-    .badge-lost{ color:#f1665f; background:rgba(241,102,95,0.1); border-color:rgba(241,102,95,0.3); }
-    .badge-retired{ color:var(--text-faint); background:var(--surface-2); border-color:var(--border-strong); }
-    .badge-disposed{ color:var(--text-faint); background:var(--surface-2); border-color:var(--border-strong); }
 
-    .tag-mono{
-        font-family:var(--font-mono);
-        font-size:0.85rem;
-        color:var(--text-muted);
+    .status-badge::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: currentColor;
+    }
+
+    .badge-available {
+        color: var(--ok);
+        background: var(--ok-soft);
+        border-color: rgba(52, 211, 153, 0.4);
+    }
+
+    .badge-allocated {
+        color: var(--accent);
+        background: var(--accent-soft);
+        border-color: var(--accent-dim);
+    }
+
+    .badge-reserved {
+        color: #5aa9e6;
+        background: rgba(90, 169, 230, 0.14);
+        border-color: rgba(90, 169, 230, 0.4);
+    }
+
+    .badge-under-maintenance {
+        color: var(--danger);
+        background: var(--danger-soft);
+        border-color: rgba(241, 102, 95, 0.4);
+    }
+
+    .badge-lost {
+        color: #f1665f;
+        background: rgba(241, 102, 95, 0.1);
+        border-color: rgba(241, 102, 95, 0.3);
+    }
+
+    .badge-retired {
+        color: var(--text-faint);
+        background: var(--surface-2);
+        border-color: var(--border-strong);
+    }
+
+    .badge-disposed {
+        color: var(--text-faint);
+        background: var(--surface-2);
+        border-color: var(--border-strong);
+    }
+
+    .tag-mono {
+        font-family: var(--font-mono);
+        font-size: 0.85rem;
+        color: var(--text-muted);
     }
 </style>
 {% endblock %}
@@ -179,28 +321,62 @@
         <h2>Asset Management</h2>
         <p>Search, filter and track every tagged asset across departments.</p>
     </div>
+
+    <div class="page-head-actions">
+        <a href="{% url 'add_asset' %}" class="action-btn solid">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+            Register Asset
+        </a>
+        <a href="{% url 'allocate_asset' %}" class="action-btn outline">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"/><path d="M18 8v6M15 11h6"/></svg>
+            Allocate Asset
+        </a>
+    </div>
 </div>
 
 <form method="GET" class="filter-bar">
 
     <div class="field-shell">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+            <circle cx="11" cy="11" r="7" />
+            <path d="M21 21l-4.3-4.3" />
+        </svg>
         <input type="text" name="search" placeholder="Search asset..." value="{{ request.GET.search }}">
     </div>
 
-    <select name="status">
-        <option value="">All Status</option>
-        <option value="Available">Available</option>
-        <option value="Allocated">Allocated</option>
-        <option value="Reserved">Reserved</option>
-        <option value="Under Maintenance">Under Maintenance</option>
-        <option value="Lost">Lost</option>
-        <option value="Retired">Retired</option>
-        <option value="Disposed">Disposed</option>
-    </select>
+    <div style="display:flex; gap:12px;">
+        <select name="status">
+            <option value="">All Status</option>
+            <option value="Available">Available</option>
+            <option value="Allocated">Allocated</option>
+            <option value="Reserved">Reserved</option>
+            <option value="Under Maintenance">Under Maintenance</option>
+            <option value="Lost">Lost</option>
+            <option value="Retired">Retired</option>
+            <option value="Disposed">Disposed</option>
+        </select>
+        <select name="category">
+            <option value="">All Categories</option>
+
+            {% for category in categories %}
+            <option
+                value="{{ category.id }}"
+                {% if request.GET.category == category.id|stringformat:"s" %}
+                selected
+                {% endif %}
+            >
+                {{ category.name }}
+            </option>
+            {% endfor %}
+
+        </select>
+    </div>
 
     <button type="submit">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" width="15" height="15"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" width="15" height="15">
+            <circle cx="11" cy="11" r="7" />
+            <path d="M21 21l-4.3-4.3" />
+        </svg>
         Search
     </button>
 
@@ -217,6 +393,7 @@
                 <th>Department</th>
                 <th>Status</th>
                 <th>Location</th>
+                <th>Action</th>
             </tr>
         </thead>
 
@@ -226,17 +403,27 @@
 
             <tr>
                 <td class="tag-mono">{{ asset.asset_tag }}</td>
-                <td>{{ asset.name }}</td>
+                <td>
+                    <a href="{% url 'asset_detail' asset.id %}">
+                        {{ asset.name }}
+                    </a>
+                </td>
                 <td>{{ asset.category }}</td>
                 <td>{{ asset.department }}</td>
                 <td><span class="status-badge badge-{{ asset.status|slugify }}">{{ asset.status }}</span></td>
                 <td>{{ asset.location }}</td>
+
+                <td>
+                    <a href="{% url 'asset_detail' asset.id %}" class="view-link">
+                        View
+                    </a>
+                </td>
             </tr>
 
             {% empty %}
 
             <tr class="empty-row">
-                <td colspan="6">No assets found</td>
+                <td colspan="7">No assets found</td>
             </tr>
 
             {% endfor %}
