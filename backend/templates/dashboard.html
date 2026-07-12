@@ -49,7 +49,7 @@
         margin-bottom:1.5rem;
     }
     @media (min-width:700px){
-        .kpi-grid{grid-template-columns:repeat(4, 1fr);}
+        .kpi-grid{grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));}
     }
 
     .kpi-card{
@@ -85,6 +85,9 @@
     .kpi-icon.available{ background:var(--ok-soft); color:var(--ok); }
     .kpi-icon.allocated{ background:var(--accent-soft); color:var(--accent); }
     .kpi-icon.maintenance{ background:var(--danger-soft); color:var(--danger); }
+    .kpi-icon.bookings{ background:rgba(139,92,246,0.12); color:#8b5cf6; }
+    .kpi-icon.transfers{ background:rgba(245,158,11,0.12); color:#f59e0b; }
+    .kpi-icon.returns{ background:rgba(20,184,166,0.12); color:#14b8a6; }
 
     .kpi-label{
         font-family:var(--font-mono);
@@ -153,6 +156,80 @@
     .status-dot.allocated{background:var(--accent);}
     .status-dot.maintenance{background:var(--danger);}
     .status-dot.total{background:var(--text-faint);}
+
+    /* ---------- Quick Actions ---------- */
+    .quick-actions{
+        display:flex;
+        flex-wrap:wrap;
+        gap:0.75rem;
+    }
+    .qa-btn{
+        display:inline-flex;
+        align-items:center;
+        gap:0.55rem;
+        padding:0.7rem 1.1rem;
+        border-radius:var(--radius);
+        font-size:0.88rem;
+        font-weight:600;
+        text-decoration:none;
+        border:1px solid transparent;
+        transition:transform 0.15s ease, border-color 0.15s ease;
+    }
+    .qa-btn:hover{ transform:translateY(-2px); }
+    .qa-btn svg{ width:16px; height:16px; stroke:currentColor; flex-shrink:0; }
+
+    .qa-btn.primary{
+        background:var(--accent-soft);
+        color:var(--accent);
+        border-color:var(--accent-dim);
+    }
+    .qa-btn.warning{
+        background:var(--danger-soft);
+        color:var(--danger);
+        border-color:rgba(239,68,68,0.35);
+    }
+    .qa-btn.success{
+        background:var(--ok-soft);
+        color:var(--ok);
+        border-color:rgba(34,197,94,0.35);
+    }
+
+    /* ---------- Recent Activity ---------- */
+    .activity-list{
+        display:flex;
+        flex-direction:column;
+    }
+    .activity-item{
+        display:flex;
+        align-items:flex-start;
+        gap:0.85rem;
+        padding:0.9rem 0;
+        border-bottom:1px solid var(--border);
+    }
+    .activity-item:last-child{ border-bottom:none; }
+    .activity-dot{
+        width:8px; height:8px;
+        border-radius:50%;
+        background:var(--accent);
+        margin-top:0.45rem;
+        flex-shrink:0;
+    }
+    .activity-item strong{
+        color:var(--text-main);
+        font-weight:600;
+    }
+    .activity-item p{
+        margin:0;
+        font-size:0.88rem;
+        color:var(--text-muted);
+        line-height:1.5;
+    }
+    .activity-empty{
+        color:var(--text-faint);
+        font-size:0.88rem;
+        text-align:center;
+        padding:1.5rem 0;
+    }
 </style>
 {% endblock %}
 
@@ -208,6 +285,36 @@
         <div class="kpi-value">{{ maintenance }}</div>
     </div>
 
+    <div class="kpi-card">
+        <div class="kpi-top">
+            <span class="kpi-label">Active Bookings</span>
+            <div class="kpi-icon bookings">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+            </div>
+        </div>
+        <div class="kpi-value">{{ active_bookings }}</div>
+    </div>
+
+    <div class="kpi-card">
+        <div class="kpi-top">
+            <span class="kpi-label">Pending Transfers</span>
+            <div class="kpi-icon transfers">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M7 7h11l-3-3M17 17H6l3 3"/></svg>
+            </div>
+        </div>
+        <div class="kpi-value">{{ pending_transfers }}</div>
+    </div>
+
+    <div class="kpi-card">
+        <div class="kpi-top">
+            <span class="kpi-label">Upcoming Returns</span>
+            <div class="kpi-icon returns">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+            </div>
+        </div>
+        <div class="kpi-value">{{ upcoming_returns }}</div>
+    </div>
+
 </div>
 
 <div class="card section-card">
@@ -217,6 +324,50 @@
     </div>
     <div class="card-body">
         <canvas id="assetChart" height="90"></canvas>
+    </div>
+</div>
+
+<div class="card section-card">
+    <div class="card-head">
+        <h3>Quick Actions</h3>
+        <span class="tag">AF-ACTIONS</span>
+    </div>
+    <div class="card-body">
+        <div class="quick-actions">
+            <a href="/admin/assets/asset/add/" class="qa-btn primary">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                Register Asset
+            </a>
+            <a href="/maintenance/" class="qa-btn warning">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M14.7 6.3a4 4 0 0 1-5.4 5.4L4 17l3 3 5.3-5.3a4 4 0 0 1 5.4-5.4l-3-3-0z"/></svg>
+                Raise Maintenance
+            </a>
+            <a href="/assets/" class="qa-btn success">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="1.5"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                View Assets
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="card section-card">
+    <div class="card-head">
+        <h3>Recent Activity</h3>
+        <span class="tag">AF-LOG</span>
+    </div>
+    <div class="card-body">
+        <div class="activity-list">
+            {% for request in recent_requests %}
+            <div class="activity-item">
+                <span class="activity-dot"></span>
+                <div>
+                    <p><strong>{{ request.asset.name }}</strong> — {{ request.issue }}</p>
+                </div>
+            </div>
+            {% empty %}
+            <p class="activity-empty">No recent activity.</p>
+            {% endfor %}
+        </div>
     </div>
 </div>
 
