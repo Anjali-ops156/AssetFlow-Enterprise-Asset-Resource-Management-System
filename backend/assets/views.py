@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from .models import Asset
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.decorators import login_required
 
-
+@login_required
 def asset_list(request):
     assets = Asset.objects.all().order_by("-id")
 
@@ -21,6 +22,7 @@ def asset_list(request):
 
     return render(request, "assets/asset_list.html", context)
 
+@login_required
 def asset_detail(request, pk):
     asset = get_object_or_404(Asset, pk=pk)
     return render(request, "assets/asset_detail.html", {"asset": asset})

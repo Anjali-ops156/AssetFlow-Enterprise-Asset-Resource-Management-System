@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from .models import MaintenanceRequest
+from django.contrib.auth.decorators import login_required
 
-
+@login_required
 def maintenance_list(request):
     requests = MaintenanceRequest.objects.all().order_by("-id")
 

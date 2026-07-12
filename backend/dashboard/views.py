@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from assets.models import Asset
+from django.contrib.auth.decorators import login_required
 
-
+@login_required
 def dashboard(request):
     total_assets = Asset.objects.count()
     available = Asset.objects.filter(status="Available").count()
