@@ -8,51 +8,61 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
 
     <style>
-        :root{
-            --bg:#0b1220;
-            --bg-soft:#0e1729;
-            --surface:#121c30;
-            --surface-2:#182236;
-            --border:rgba(232,237,245,0.08);
-            --border-strong:rgba(232,237,245,0.16);
-            --text-main:#e9edf5;
-            --text-muted:#8c96ab;
-            --text-faint:#5c6478;
-            --accent:#e8a33d;
-            --accent-soft:rgba(232,163,61,0.14);
-            --accent-dim:rgba(232,163,61,0.35);
-            --ok:#34d399;
-            --ok-soft:rgba(52,211,153,0.14);
-            --danger:#f1665f;
-            --danger-soft:rgba(241,102,95,0.14);
-            --radius:14px;
-            --sidebar-w:260px;
-            --font-display:'Space Grotesk', system-ui, sans-serif;
-            --font-body:'Inter', system-ui, sans-serif;
-            --font-mono:'JetBrains Mono', ui-monospace, monospace;
+        :root {
+            --bg: #0b1220;
+            --bg-soft: #0e1729;
+            --surface: #121c30;
+            --surface-2: #182236;
+            --border: rgba(232, 237, 245, 0.08);
+            --border-strong: rgba(232, 237, 245, 0.16);
+            --text-main: #e9edf5;
+            --text-muted: #8c96ab;
+            --text-faint: #5c6478;
+            --accent: #e8a33d;
+            --accent-soft: rgba(232, 163, 61, 0.14);
+            --accent-dim: rgba(232, 163, 61, 0.35);
+            --ok: #34d399;
+            --ok-soft: rgba(52, 211, 153, 0.14);
+            --danger: #f1665f;
+            --danger-soft: rgba(241, 102, 95, 0.14);
+            --radius: 14px;
+            --sidebar-w: 260px;
+            --font-display: 'Space Grotesk', system-ui, sans-serif;
+            --font-body: 'Inter', system-ui, sans-serif;
+            --font-mono: 'JetBrains Mono', ui-monospace, monospace;
         }
 
-        *{box-sizing:border-box;}
-        body{margin:0;}
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+        }
 
         body {
             background:
-                radial-gradient(900px 500px at 100% 0%, rgba(232,163,61,0.06), transparent 55%),
+                radial-gradient(900px 500px at 100% 0%, rgba(232, 163, 61, 0.06), transparent 55%),
                 var(--bg-soft);
-            color:var(--text-main);
-            font-family:var(--font-body);
-            line-height:1.5;
+            color: var(--text-main);
+            font-family: var(--font-body);
+            line-height: 1.5;
         }
 
-        a{color:inherit; text-decoration:none;}
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
 
-        :focus-visible{
-            outline:2px solid var(--accent);
-            outline-offset:2px;
-            border-radius:4px;
+        :focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+            border-radius: 4px;
         }
 
         /* ---------- Sidebar ---------- */
@@ -60,204 +70,256 @@
             width: var(--sidebar-w);
             height: 100vh;
             position: fixed;
-            top:0; left:0;
+            top: 0;
+            left: 0;
             background: var(--surface);
-            border-right:1px solid var(--border);
+            border-right: 1px solid var(--border);
             color: var(--text-main);
             padding: 1.5rem 1rem;
-            display:flex;
-            flex-direction:column;
-            z-index:40;
-            transition:transform 0.25s ease;
+            display: flex;
+            flex-direction: column;
+            z-index: 40;
+            transition: transform 0.25s ease;
         }
 
-        .sidebar .brand{
-            display:flex; align-items:center; gap:0.6rem;
-            font-family:var(--font-display);
-            font-weight:700;
-            font-size:1.02rem;
-            padding:0.35rem 0.6rem 1.1rem;
-        }
-        .sidebar .brand .mark{
-            width:32px; height:32px;
-            border-radius:8px;
-            background:linear-gradient(145deg, var(--accent), #b97a1f);
-            color:#1a1305;
-            display:flex; align-items:center; justify-content:center;
-            font-family:var(--font-mono);
-            font-weight:600;
-            font-size:0.75rem;
-            flex-shrink:0;
+        .sidebar .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.02rem;
+            padding: 0.35rem 0.6rem 1.1rem;
         }
 
-        .sidebar hr{
-            border:none;
-            border-top:1px solid var(--border);
-            margin:0 0.6rem 0.9rem;
+        .sidebar .brand .mark {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: linear-gradient(145deg, var(--accent), #b97a1f);
+            color: #1a1305;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-mono);
+            font-weight: 600;
+            font-size: 0.75rem;
+            flex-shrink: 0;
         }
 
-        .nav-group{
-            list-style:none;
-            margin:0 0 auto 0;
-            padding:0;
-            display:flex;
-            flex-direction:column;
-            gap:0.2rem;
+        .sidebar hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 0 0.6rem 0.9rem;
+        }
+
+        .nav-group {
+            list-style: none;
+            margin: 0 0 auto 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
         }
 
         .nav-group a,
-        .sidebar > a {
+        .sidebar>a {
             color: var(--text-muted);
             display: flex;
-            align-items:center;
-            gap:0.75rem;
+            align-items: center;
+            gap: 0.75rem;
             text-decoration: none;
             padding: 0.65rem 0.75rem;
             margin-bottom: 0.2rem;
             border-radius: 9px;
-            font-size:0.9rem;
-            font-weight:500;
+            font-size: 0.9rem;
+            font-weight: 500;
             transition: background-color 0.15s, color 0.15s;
         }
 
         .nav-group a svg,
-        .sidebar > a svg{
-            width:17px; height:17px;
-            stroke:currentColor;
-            flex-shrink:0;
+        .sidebar>a svg {
+            width: 17px;
+            height: 17px;
+            stroke: currentColor;
+            flex-shrink: 0;
         }
 
         .nav-group a:hover,
-        .sidebar > a:hover {
+        .sidebar>a:hover {
             background: var(--surface-2);
             color: var(--text-main);
         }
 
-        .nav-group a.active{
+        .nav-group a.active {
             background: var(--accent-soft);
             color: var(--accent);
-            border:1px solid var(--accent-dim);
+            border: 1px solid var(--accent-dim);
         }
 
-        .sidebar-foot{
-            border-top:1px solid var(--border);
-            padding-top:0.9rem;
-            margin-top:0.9rem;
-            display:flex;
-            flex-direction:column;
-            gap:0.2rem;
+        .sidebar-foot {
+            border-top: 1px solid var(--border);
+            padding-top: 0.9rem;
+            margin-top: 0.9rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
         }
 
-        .sidebar-foot a[href*="logout"]{
-            color:#ff9f97;
+        .sidebar-foot a[href*="logout"] {
+            color: #ff9f97;
         }
-        .sidebar-foot a[href*="logout"]:hover{
-            background:var(--danger-soft);
-            color:var(--danger);
+
+        .sidebar-foot a[href*="logout"]:hover {
+            background: var(--danger-soft);
+            color: var(--danger);
         }
 
         /* ---------- Mobile toggle ---------- */
-        .topbar{
-            display:none;
-            align-items:center;
-            justify-content:space-between;
-            padding:0.9rem 1.25rem;
-            background:var(--surface);
-            border-bottom:1px solid var(--border);
-            position:sticky;
-            top:0;
-            z-index:30;
-        }
-        .topbar .brand{
-            display:flex; align-items:center; gap:0.55rem;
-            font-family:var(--font-display);
-            font-weight:700;
-            font-size:0.98rem;
-        }
-        .topbar .brand .mark{
-            width:28px; height:28px;
-            border-radius:7px;
-            background:linear-gradient(145deg, var(--accent), #b97a1f);
-            color:#1a1305;
-            display:flex; align-items:center; justify-content:center;
-            font-family:var(--font-mono);
-            font-weight:600;
-            font-size:0.7rem;
-        }
-        .menu-btn{
-            background:var(--surface-2);
-            border:1px solid var(--border-strong);
-            color:var(--text-main);
-            width:38px; height:38px;
-            border-radius:8px;
-            display:flex; align-items:center; justify-content:center;
-            cursor:pointer;
-        }
-        .menu-btn svg{width:18px; height:18px; stroke:currentColor;}
-
-        .sidebar-backdrop{
-            display:none;
-            position:fixed;
-            inset:0;
-            background:rgba(0,0,0,0.55);
-            z-index:35;
+        .topbar {
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.9rem 1.25rem;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 30;
         }
 
-        @media (max-width: 900px){
-            .topbar{display:flex;}
-            .sidebar{
-                transform:translateX(-100%);
-                box-shadow:0 30px 60px -20px rgba(0,0,0,0.6);
+        .topbar .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.55rem;
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 0.98rem;
+        }
+
+        .topbar .brand .mark {
+            width: 28px;
+            height: 28px;
+            border-radius: 7px;
+            background: linear-gradient(145deg, var(--accent), #b97a1f);
+            color: #1a1305;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-mono);
+            font-weight: 600;
+            font-size: 0.7rem;
+        }
+
+        .menu-btn {
+            background: var(--surface-2);
+            border: 1px solid var(--border-strong);
+            color: var(--text-main);
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .menu-btn svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
+        }
+
+        .sidebar-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.55);
+            z-index: 35;
+        }
+
+        @media (max-width: 900px) {
+            .topbar {
+                display: flex;
             }
-            body.nav-open .sidebar{transform:translateX(0);}
-            body.nav-open .sidebar-backdrop{display:block;}
-            .content{margin-left:0 !important;}
+
+            .sidebar {
+                transform: translateX(-100%);
+                box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.6);
+            }
+
+            body.nav-open .sidebar {
+                transform: translateX(0);
+            }
+
+            body.nav-open .sidebar-backdrop {
+                display: block;
+            }
+
+            .content {
+                margin-left: 0 !important;
+            }
         }
 
         /* ---------- Content ---------- */
         .content {
             margin-left: var(--sidebar-w);
             padding: 2rem 2.25rem 3rem;
-            min-height:100vh;
+            min-height: 100vh;
         }
 
         /* Baseline element theming so page content inherits the look
            without requiring changes in child templates */
-        h1,h2,h3,h4,h5{
-            font-family:var(--font-display);
-            letter-spacing:-0.01em;
+        h1,
+        h2,
+        h3,
+        h4,
+        h5 {
+            font-family: var(--font-display);
+            letter-spacing: -0.01em;
         }
 
-        .card, .panel, .box{
-            background:var(--surface);
-            border:1px solid var(--border);
-            border-radius:var(--radius);
+        .card,
+        .panel,
+        .box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
         }
 
-        table{
-            width:100%;
-            border-collapse:collapse;
-            background:var(--surface);
-            border:1px solid var(--border);
-            border-radius:var(--radius);
-            overflow:hidden;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
         }
-        th, td{
-            padding:0.75rem 1rem;
-            text-align:left;
-            border-bottom:1px solid var(--border);
-            font-size:0.9rem;
-        }
-        th{
-            color:var(--text-faint);
-            font-family:var(--font-mono);
-            font-size:0.72rem;
-            letter-spacing:0.04em;
-            text-transform:uppercase;
-        }
-        tr:last-child td{border-bottom:none;}
 
-        ::selection{background:var(--accent-soft); color:var(--text-main);}
+        th,
+        td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.9rem;
+        }
+
+        th {
+            color: var(--text-faint);
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        ::selection {
+            background: var(--accent-soft);
+            color: var(--text-main);
+        }
     </style>
 
     {% block extra_head %}{% endblock %}
@@ -269,7 +331,9 @@
     <div class="topbar">
         <div class="brand"><span class="mark">AF</span> AssetFlow</div>
         <button class="menu-btn" id="navToggle" aria-label="Toggle menu">
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                <path d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
         </button>
     </div>
 
@@ -283,46 +347,80 @@
 
         <ul class="nav-group">
             <li><a href="/dashboard/">
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
-                Dashboard
-            </a></li>
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="9" rx="1.5" />
+                        <rect x="14" y="3" width="7" height="5" rx="1.5" />
+                        <rect x="14" y="12" width="7" height="9" rx="1.5" />
+                        <rect x="3" y="16" width="7" height="5" rx="1.5" />
+                    </svg>
+                    Dashboard
+                </a></li>
             <li><a href="/assets/">
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="1.5"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-                Assets
-            </a></li>
-            <li><a href="/organization/employees/">
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"/><circle cx="17.5" cy="8.5" r="2.4"/><path d="M15.5 14.3c2.6.3 4.5 2.2 4.5 5.2"/></svg>
-                Employees
-            </a></li>
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                        <rect x="3" y="7" width="18" height="13" rx="1.5" />
+                        <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                    </svg>
+                    Assets
+                </a></li>
+            <li>
+                <a href="{% url 'organization_setup' %}">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                        <rect x="3" y="4" width="18" height="16" rx="2" />
+                        <path d="M7 8h10" />
+                        <path d="M7 12h10" />
+                        <path d="M7 16h6" />
+                    </svg>
+                    Organization Setup
+                </a>
+            </li>
             <li><a href="/bookings/">
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="4.5" width="18" height="16" rx="1.5"/><path d="M3 9.5h18M8 3v3M16 3v3"/></svg>
-                Bookings
-            </a></li>
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                        <rect x="3" y="4.5" width="18" height="16" rx="1.5" />
+                        <path d="M3 9.5h18M8 3v3M16 3v3" />
+                    </svg>
+                    Bookings
+                </a></li>
             <li><a href="/maintenance/">
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M14.7 6.3a4 4 0 0 1-5.4 5.4L4 17l3 3 5.3-5.3a4 4 0 0 1 5.4-5.4l-3-3-0z"/></svg>
-                Maintenance
-            </a></li>
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                        <path d="M14.7 6.3a4 4 0 0 1-5.4 5.4L4 17l3 3 5.3-5.3a4 4 0 0 1 5.4-5.4l-3-3-0z" />
+                    </svg>
+                    Maintenance
+                </a></li>
             <li><a href="/notifications/">
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M6 8a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6"/><path d="M9.5 20a2.5 2.5 0 0 0 5 0"/></svg>
-                Notifications
-            </a></li>
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                        <path d="M6 8a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6" />
+                        <path d="M9.5 20a2.5 2.5 0 0 0 5 0" />
+                    </svg>
+                    Notifications
+                </a></li>
             <li><a href="/reports/">
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 20V10M12 20V4M20 20v-7"/></svg>
-                Reports
-            </a></li>
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                        <path d="M4 20V10M12 20V4M20 20v-7" />
+                    </svg>
+                    Reports
+                </a></li>
             <li><a href="/admin/">
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 2l7 3.5v5c0 5-3 8.5-7 11.5-4-3-7-6.5-7-11.5v-5L12 2z"/></svg>
-                Admin
-            </a></li>
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                        <path d="M12 2l7 3.5v5c0 5-3 8.5-7 11.5-4-3-7-6.5-7-11.5v-5L12 2z" />
+                    </svg>
+                    Admin
+                </a></li>
         </ul>
 
         <div class="sidebar-foot">
             <a href="{% url 'profile' %}">
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.9 3.1-6.5 7-6.5s7 2.6 7 6.5"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                    <circle cx="12" cy="8" r="3.5" />
+                    <path d="M5 20c0-3.9 3.1-6.5 7-6.5s7 2.6 7 6.5" />
+                </svg>
                 My Profile
             </a>
             <a href="{% url 'logout' %}">
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                    <path d="M16 17l5-5-5-5" />
+                    <path d="M21 12H9" />
+                </svg>
                 Logout
             </a>
         </div>
@@ -340,23 +438,23 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         // Mobile sidebar toggle
-        (function(){
+        (function () {
             var body = document.body;
             var toggle = document.getElementById('navToggle');
             var backdrop = document.getElementById('navBackdrop');
-            function close(){ body.classList.remove('nav-open'); }
-            if (toggle) toggle.addEventListener('click', function(){ body.classList.toggle('nav-open'); });
+            function close() { body.classList.remove('nav-open'); }
+            if (toggle) toggle.addEventListener('click', function () { body.classList.toggle('nav-open'); });
             if (backdrop) backdrop.addEventListener('click', close);
         })();
 
         // Highlight the current section in the sidebar
-        (function(){
+        (function () {
             var path = window.location.pathname;
             var links = document.querySelectorAll('.nav-group a');
             var best = null;
-            links.forEach(function(a){
+            links.forEach(function (a) {
                 var href = a.getAttribute('href');
-                if (href === '/' ) {
+                if (href === '/') {
                     if (path === '/') best = a;
                     return;
                 }
@@ -369,7 +467,7 @@
     </script>
 
     {% block extra_scripts %}{% endblock %}
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
