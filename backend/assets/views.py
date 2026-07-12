@@ -5,6 +5,7 @@ from .models import Asset
 from organization.models import AssetCategory
 from django.shortcuts import redirect
 from .forms import AssetAllocationForm
+from notifications.models import Notification
 from .forms import AssetForm
 
 
@@ -71,9 +72,12 @@ def allocate_asset(request):
         form = AssetAllocationForm(request.POST)
 
         if form.is_valid():
-
-            form.save()
-
+            allocation = form.save()
+            Notification.objects.create(
+                user=allocation.employee,
+                title="Asset Allocated",
+                message=f"You have been allocated {allocation.asset.asset_tag} ({allocation.asset.name})."
+                )
             return redirect("asset_list")
 
     else:
