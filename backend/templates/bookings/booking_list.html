@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Bookings{% endblock %}
+
+{% block content %}
+
+<h2 class="mb-4">Resource Bookings</h2>
+
+<table class="table table-bordered table-hover shadow bg-white">
+
+    <thead class="table-dark">
+
+        <tr>
+            <th>Asset</th>
+            <th>Employee</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Status</th>
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        {% for booking in bookings %}
+
+        <tr>
+            <td>{{ booking.asset }}</td>
+            <td>{{ booking.employee }}</td>
+            <td>{{ booking.start_time }}</td>
+            <td>{{ booking.end_time }}</td>
+            <td>
+                <span class="badge bg-success">
+                    {{ booking.status }}
+                </span>
+            </td>
+        </tr>
+
+        {% empty %}
+
+        <tr>
+            <td colspan="5" class="text-center">
+                No Bookings Found
+            </td>
+        </tr>
+
+        {% endfor %}
+
+    </tbody>
+
+</table>
+
+{% endblock %}
