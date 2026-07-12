@@ -2,48 +2,159 @@
 
 {% block title %}Maintenance{% endblock %}
 
+{% block extra_head %}
+<style>
+    .page-head{
+        margin-bottom:1.75rem;
+    }
+    .page-head .eyebrow{
+        display:inline-flex; align-items:center; gap:0.5rem;
+        font-family:var(--font-mono);
+        font-size:0.7rem;
+        letter-spacing:0.06em;
+        color:var(--accent);
+        background:var(--accent-soft);
+        border:1px solid var(--accent-dim);
+        padding:0.3rem 0.65rem;
+        border-radius:999px;
+        margin-bottom:0.75rem;
+    }
+    .page-head h2{
+        font-size:1.6rem;
+        font-weight:700;
+        margin:0;
+    }
+    .page-head p{
+        color:var(--text-muted);
+        font-size:0.9rem;
+        margin-top:0.3rem;
+    }
+
+    .table-wrap{
+        background:var(--surface);
+        border:1px solid var(--border);
+        border-radius:var(--radius);
+        overflow:hidden;
+    }
+    .table-wrap table{ border:none; border-radius:0; }
+    .table-wrap thead th{ background:var(--surface-2); }
+    .table-wrap tbody tr{ transition:background-color 0.15s; }
+    .table-wrap tbody tr:hover{ background:var(--bg-soft); }
+    .empty-row td{
+        text-align:center;
+        color:var(--text-faint);
+        padding:2.5rem 1rem;
+        font-family:var(--font-mono);
+        font-size:0.85rem;
+    }
+
+    .tag-mono{
+        font-family:var(--font-mono);
+        font-size:0.82rem;
+        color:var(--text-muted);
+    }
+
+    /* ---------- Status badges ---------- */
+    .status-badge{
+        display:inline-flex;
+        align-items:center;
+        gap:0.4rem;
+        font-family:var(--font-mono);
+        font-size:0.75rem;
+        padding:0.28rem 0.65rem;
+        border-radius:999px;
+        border:1px solid;
+        white-space:nowrap;
+    }
+    .status-badge::before{
+        content:"";
+        width:6px; height:6px;
+        border-radius:50%;
+        background:currentColor;
+    }
+    .badge-pending{ color:#5aa9e6; background:rgba(90,169,230,0.14); border-color:rgba(90,169,230,0.4); }
+    .badge-approved{ color:var(--accent); background:var(--accent-soft); border-color:var(--accent-dim); }
+    .badge-rejected{ color:var(--danger); background:var(--danger-soft); border-color:rgba(241,102,95,0.4); }
+    .badge-technician-assigned{ color:#b48be0; background:rgba(180,139,224,0.14); border-color:rgba(180,139,224,0.4); }
+    .badge-in-progress{ color:var(--accent); background:var(--accent-soft); border-color:var(--accent-dim); }
+    .badge-resolved{ color:var(--ok); background:var(--ok-soft); border-color:rgba(52,211,153,0.4); }
+
+    /* ---------- Priority chips ---------- */
+    .priority-chip{
+        display:inline-flex;
+        align-items:center;
+        gap:0.35rem;
+        font-size:0.8rem;
+        font-weight:600;
+    }
+    .priority-chip::before{
+        content:"";
+        width:8px; height:8px;
+        border-radius:2px;
+    }
+    .priority-low{ color:var(--text-muted); }
+    .priority-low::before{ background:var(--text-faint); }
+    .priority-medium{ color:#5aa9e6; }
+    .priority-medium::before{ background:#5aa9e6; }
+    .priority-high{ color:var(--accent); }
+    .priority-high::before{ background:var(--accent); }
+    .priority-urgent{ color:var(--danger); }
+    .priority-urgent::before{ background:var(--danger); }
+</style>
+{% endblock %}
+
 {% block content %}
 
-<h2 class="mb-4">Maintenance Requests</h2>
+<div class="page-head">
+    <div class="eyebrow"><span>AF-MAINT</span></div>
+    <h2>Maintenance Requests</h2>
+    <p>Every repair ticket moving through approval, assignment and resolution.</p>
+</div>
 
-<table class="table table-bordered table-hover shadow bg-white">
+<div class="table-wrap">
+    <table>
 
-    <thead class="table-dark">
+        <thead>
+            <tr>
+                <th>Asset</th>
+                <th>Requested By</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>Created</th>
+            </tr>
+        </thead>
 
-        <tr>
-            <th>Asset</th>
-            <th>Requested By</th>
-            <th>Priority</th>
-            <th>Status</th>
-            <th>Created</th>
-        </tr>
+        <tbody>
 
-    </thead>
+            {% for request in requests %}
 
-    <tbody>
+            <tr>
+                <td>{{ request.asset }}</td>
+                <td>{{ request.requested_by }}</td>
+                <td>
+                    <span class="priority-chip priority-{{ request.priority|slugify }}">
+                        {{ request.priority }}
+                    </span>
+                </td>
+                <td>
+                    <span class="status-badge badge-{{ request.status|slugify }}">
+                        {{ request.status }}
+                    </span>
+                </td>
+                <td class="tag-mono">{{ request.created_at }}</td>
+            </tr>
 
-        {% for request in requests %}
+            {% empty %}
 
-        <tr>
-            <td>{{ request.asset }}</td>
-            <td>{{ request.requested_by }}</td>
-            <td>{{ request.priority }}</td>
-            <td>{{ request.status }}</td>
-            <td>{{ request.created_at }}</td>
-        </tr>
+            <tr class="empty-row">
+                <td colspan="5">No maintenance requests</td>
+            </tr>
 
-        {% empty %}
+            {% endfor %}
 
-        <tr>
-            <td colspan="5" class="text-center">
-                No Maintenance Requests
-            </td>
-        </tr>
+        </tbody>
 
-        {% endfor %}
-
-    </tbody>
-
-</table>
+    </table>
+</div>
 
 {% endblock %}

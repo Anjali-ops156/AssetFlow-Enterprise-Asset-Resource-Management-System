@@ -2,56 +2,158 @@
 
 {% block title %}Bookings{% endblock %}
 
+{% block extra_head %}
+<style>
+    .page-head{
+        display:flex;
+        align-items:flex-start;
+        justify-content:space-between;
+        flex-wrap:wrap;
+        gap:1rem;
+        margin-bottom:1.75rem;
+    }
+    .page-head .eyebrow{
+        display:inline-flex; align-items:center; gap:0.5rem;
+        font-family:var(--font-mono);
+        font-size:0.7rem;
+        letter-spacing:0.06em;
+        color:var(--accent);
+        background:var(--accent-soft);
+        border:1px solid var(--accent-dim);
+        padding:0.3rem 0.65rem;
+        border-radius:999px;
+        margin-bottom:0.75rem;
+    }
+    .page-head h2{
+        font-size:1.6rem;
+        font-weight:700;
+        margin:0;
+    }
+    .page-head p{
+        color:var(--text-muted);
+        font-size:0.9rem;
+        margin-top:0.3rem;
+    }
+
+    .btn-new{
+        display:inline-flex;
+        align-items:center;
+        gap:0.5rem;
+        background:var(--accent);
+        color:#1a1305;
+        font-weight:600;
+        font-size:0.9rem;
+        padding:0.7rem 1.2rem;
+        border-radius:9px;
+        box-shadow:0 6px 18px -6px rgba(232,163,61,0.5);
+        transition:background-color 0.18s, transform 0.18s;
+        white-space:nowrap;
+    }
+    .btn-new svg{ width:16px; height:16px; stroke:currentColor; }
+    .btn-new:hover{ background:#f0ad4d; transform:translateY(-1px); }
+
+    .table-wrap{
+        background:var(--surface);
+        border:1px solid var(--border);
+        border-radius:var(--radius);
+        overflow:hidden;
+    }
+    .table-wrap table{ border:none; border-radius:0; }
+    .table-wrap thead th{ background:var(--surface-2); }
+    .table-wrap tbody tr{ transition:background-color 0.15s; }
+    .table-wrap tbody tr:hover{ background:var(--bg-soft); }
+    .empty-row td{
+        text-align:center;
+        color:var(--text-faint);
+        padding:2.5rem 1rem;
+        font-family:var(--font-mono);
+        font-size:0.85rem;
+    }
+
+    .tag-mono{
+        font-family:var(--font-mono);
+        font-size:0.85rem;
+        color:var(--text-muted);
+    }
+
+    .status-badge{
+        display:inline-flex;
+        align-items:center;
+        gap:0.4rem;
+        font-family:var(--font-mono);
+        font-size:0.75rem;
+        padding:0.28rem 0.65rem;
+        border-radius:999px;
+        border:1px solid;
+        white-space:nowrap;
+    }
+    .status-badge::before{
+        content:"";
+        width:6px; height:6px;
+        border-radius:50%;
+        background:currentColor;
+    }
+    .badge-upcoming{ color:#5aa9e6; background:rgba(90,169,230,0.14); border-color:rgba(90,169,230,0.4); }
+    .badge-ongoing{ color:var(--accent); background:var(--accent-soft); border-color:var(--accent-dim); }
+    .badge-completed{ color:var(--ok); background:var(--ok-soft); border-color:rgba(52,211,153,0.4); }
+    .badge-cancelled{ color:var(--danger); background:var(--danger-soft); border-color:rgba(241,102,95,0.4); }
+</style>
+{% endblock %}
+
 {% block content %}
 
-<h2 class="mb-4">Resource Bookings</h2>
+<div class="page-head">
+    <div>
+        <div class="eyebrow"><span>RESOURCE CALENDAR</span></div>
+        <h2>Resource Bookings</h2>
+        <p>Every room and equipment slot currently held across the organization.</p>
+    </div>
+    <a href="/bookings/new/" class="btn-new">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+        New Booking
+    </a>
+</div>
 
-<a href="/bookings/new/" class="btn btn-success mb-3">
-    + New Booking
-</a>
+<div class="table-wrap">
+    <table>
 
-<table class="table table-bordered table-hover shadow bg-white">
+        <thead>
+            <tr>
+                <th>Asset</th>
+                <th>Employee</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Status</th>
+            </tr>
+        </thead>
 
-    <thead class="table-dark">
+        <tbody>
 
-        <tr>
-            <th>Asset</th>
-            <th>Employee</th>
-            <th>Start Time</th>
-            <th>End Time</th>
-            <th>Status</th>
-        </tr>
+            {% for booking in bookings %}
 
-    </thead>
+            <tr>
+                <td>{{ booking.asset }}</td>
+                <td>{{ booking.employee }}</td>
+                <td class="tag-mono">{{ booking.start_time }}</td>
+                <td class="tag-mono">{{ booking.end_time }}</td>
+                <td>
+                    <span class="status-badge badge-{{ booking.status|slugify }}">
+                        {{ booking.status }}
+                    </span>
+                </td>
+            </tr>
 
-    <tbody>
+            {% empty %}
 
-        {% for booking in bookings %}
+            <tr class="empty-row">
+                <td colspan="5">No bookings found</td>
+            </tr>
 
-        <tr>
-            <td>{{ booking.asset }}</td>
-            <td>{{ booking.employee }}</td>
-            <td>{{ booking.start_time }}</td>
-            <td>{{ booking.end_time }}</td>
-            <td>
-                <span class="badge bg-success">
-                    {{ booking.status }}
-                </span>
-            </td>
-        </tr>
+            {% endfor %}
 
-        {% empty %}
+        </tbody>
 
-        <tr>
-            <td colspan="5" class="text-center">
-                No Bookings Found
-            </td>
-        </tr>
-
-        {% endfor %}
-
-    </tbody>
-
-</table>
+    </table>
+</div>
 
 {% endblock %}

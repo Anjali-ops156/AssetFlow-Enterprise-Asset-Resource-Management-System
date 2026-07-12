@@ -2,46 +2,127 @@
 
 {% block title %}Employees{% endblock %}
 
+{% block extra_head %}
+<style>
+    .page-head{ margin-bottom:1.75rem; }
+    .page-head .eyebrow{
+        display:inline-flex; align-items:center; gap:0.5rem;
+        font-family:var(--font-mono);
+        font-size:0.7rem;
+        letter-spacing:0.06em;
+        color:var(--accent);
+        background:var(--accent-soft);
+        border:1px solid var(--accent-dim);
+        padding:0.3rem 0.65rem;
+        border-radius:999px;
+        margin-bottom:0.75rem;
+    }
+    .page-head h2{ font-size:1.6rem; font-weight:700; margin:0; }
+    .page-head p{ color:var(--text-muted); font-size:0.9rem; margin-top:0.3rem; }
+
+    .table-wrap{
+        background:var(--surface);
+        border:1px solid var(--border);
+        border-radius:var(--radius);
+        overflow:hidden;
+    }
+    .table-wrap table{ border:none; border-radius:0; }
+    .table-wrap thead th{ background:var(--surface-2); }
+    .table-wrap tbody tr{ transition:background-color 0.15s; }
+    .table-wrap tbody tr:hover{ background:var(--bg-soft); }
+    .empty-row td{
+        text-align:center;
+        color:var(--text-faint);
+        padding:2.5rem 1rem;
+        font-family:var(--font-mono);
+        font-size:0.85rem;
+    }
+
+    .person-cell{
+        display:flex;
+        align-items:center;
+        gap:0.75rem;
+    }
+    .avatar{
+        width:34px; height:34px;
+        border-radius:9px;
+        background:linear-gradient(145deg, var(--accent-soft), var(--surface-2));
+        color:var(--accent);
+        border:1px solid var(--accent-dim);
+        display:flex; align-items:center; justify-content:center;
+        font-family:var(--font-mono);
+        font-weight:600;
+        font-size:0.78rem;
+        flex-shrink:0;
+    }
+    .person-name .full{
+        font-weight:600;
+        color:var(--text-main);
+        font-size:0.9rem;
+    }
+    .person-name .uname{
+        font-family:var(--font-mono);
+        font-size:0.76rem;
+        color:var(--text-faint);
+        margin-top:0.1rem;
+    }
+    .email-cell{
+        color:var(--text-muted);
+        font-size:0.88rem;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 
-<h2 class="mb-4">Employee Directory</h2>
+<div class="page-head">
+    <div class="eyebrow"><span>AF-ORG</span></div>
+    <h2>Employee Directory</h2>
+    <p>Everyone with an AssetFlow account. Roles are assigned here by an Admin.</p>
+</div>
 
-<table class="table table-bordered table-hover shadow bg-white">
+<div class="table-wrap">
+    <table>
 
-    <thead class="table-dark">
+        <thead>
+            <tr>
+                <th>Employee</th>
+                <th>Email</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+            </tr>
+        </thead>
 
-        <tr>
-            <th>Username</th>
-            <th>Email</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-        </tr>
+        <tbody>
 
-    </thead>
+            {% for employee in employees %}
 
-    <tbody>
+            <tr>
+                <td>
+                    <div class="person-cell">
+                        <div class="avatar">{{ employee.username|slice:":2"|upper }}</div>
+                        <div class="person-name">
+                            <div class="full">{{ employee.first_name }} {{ employee.last_name }}</div>
+                            <div class="uname">@{{ employee.username }}</div>
+                        </div>
+                    </div>
+                </td>
+                <td class="email-cell">{{ employee.email }}</td>
+                <td>{{ employee.first_name }}</td>
+                <td>{{ employee.last_name }}</td>
+            </tr>
 
-        {% for employee in employees %}
+            {% empty %}
 
-        <tr>
-            <td>{{ employee.username }}</td>
-            <td>{{ employee.email }}</td>
-            <td>{{ employee.first_name }}</td>
-            <td>{{ employee.last_name }}</td>
-        </tr>
+            <tr class="empty-row">
+                <td colspan="4">No employees found</td>
+            </tr>
 
-        {% empty %}
+            {% endfor %}
 
-        <tr>
-            <td colspan="4" class="text-center">
-                No Employees Found
-            </td>
-        </tr>
+        </tbody>
 
-        {% endfor %}
-
-    </tbody>
-
-</table>
+    </table>
+</div>
 
 {% endblock %}
