@@ -1,59 +1,316 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - AssetFlow</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root{
+            --bg:#0b1220;
+            --bg-soft:#0e1729;
+            --surface:#121c30;
+            --surface-2:#182236;
+            --border:rgba(232,237,245,0.08);
+            --border-strong:rgba(232,237,245,0.16);
+            --text-main:#e9edf5;
+            --text-muted:#8c96ab;
+            --text-faint:#5c6478;
+            --accent:#e8a33d;
+            --accent-soft:rgba(232,163,61,0.14);
+            --accent-dim:rgba(232,163,61,0.35);
+            --ok:#34d399;
+            --ok-soft:rgba(52,211,153,0.14);
+            --danger:#f1665f;
+            --danger-soft:rgba(241,102,95,0.14);
+            --radius:14px;
+            --font-display:'Space Grotesk', system-ui, sans-serif;
+            --font-body:'Inter', system-ui, sans-serif;
+            --font-mono:'JetBrains Mono', ui-monospace, monospace;
+        }
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+        *{box-sizing:border-box; margin:0; padding:0;}
+
+        body{
+            background:
+                radial-gradient(1100px 550px at 85% -10%, rgba(232,163,61,0.09), transparent 60%),
+                radial-gradient(900px 500px at 5% 110%, rgba(52,211,153,0.06), transparent 55%),
+                var(--bg);
+            color:var(--text-main);
+            font-family:var(--font-body);
+            min-height:100vh;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            padding:1.5rem;
+            line-height:1.55;
+        }
+
+        a{color:inherit;}
+
+        :focus-visible{
+            outline:2px solid var(--accent);
+            outline-offset:3px;
+            border-radius:4px;
+        }
+
+        .auth-shell{
+            width:100%;
+            max-width:420px;
+        }
+
+        .brand{
+            display:flex; align-items:center; justify-content:center; gap:0.6rem;
+            font-family:var(--font-display);
+            font-weight:700;
+            font-size:1.05rem;
+            margin-bottom:1.75rem;
+        }
+        .brand .mark{
+            width:34px; height:34px;
+            border-radius:8px;
+            background:linear-gradient(145deg, var(--accent), #b97a1f);
+            color:#1a1305;
+            display:flex; align-items:center; justify-content:center;
+            font-family:var(--font-mono);
+            font-weight:600;
+            font-size:0.8rem;
+        }
+
+        /* Tag-card container, matching hero signature element */
+        .tag-card{
+            position:relative;
+            background:var(--surface);
+            border:1px solid var(--border-strong);
+            border-radius:var(--radius);
+            padding:2rem 2rem 1.75rem;
+            box-shadow:0 30px 60px -30px rgba(0,0,0,0.6);
+            overflow:hidden;
+        }
+        .tag-card::before{
+            content:"";
+            position:absolute;
+            left:-9px; top:0; bottom:0; width:18px;
+            background-image:radial-gradient(circle, var(--bg) 5px, transparent 5.5px);
+            background-size:18px 22px;
+            background-repeat:repeat-y;
+        }
+        .tag-card::after{
+            content:"";
+            position:absolute;
+            right:-9px; top:0; bottom:0; width:18px;
+            background-image:radial-gradient(circle, var(--bg) 5px, transparent 5.5px);
+            background-size:18px 22px;
+            background-repeat:repeat-y;
+        }
+
+        .tag-head{
+            text-align:center;
+            margin-bottom:1.5rem;
+            padding-bottom:1.25rem;
+            border-bottom:1px dashed var(--border-strong);
+        }
+        .eyebrow{
+            display:inline-flex; align-items:center; gap:0.5rem;
+            font-family:var(--font-mono);
+            font-size:0.68rem;
+            letter-spacing:0.06em;
+            color:var(--accent);
+            background:var(--accent-soft);
+            border:1px solid var(--accent-dim);
+            padding:0.3rem 0.65rem;
+            border-radius:999px;
+            margin-bottom:0.9rem;
+        }
+        .eyebrow .dot{
+            width:6px; height:6px; border-radius:50%;
+            background:var(--ok);
+            box-shadow:0 0 0 3px var(--ok-soft);
+        }
+        h2{
+            font-family:var(--font-display);
+            font-weight:700;
+            letter-spacing:-0.02em;
+            font-size:1.6rem;
+        }
+        .tag-head p{
+            color:var(--text-muted);
+            font-size:0.88rem;
+            margin-top:0.4rem;
+        }
+
+        /* Alerts */
+        .alert{
+            display:flex;
+            align-items:flex-start;
+            gap:0.55rem;
+            background:var(--danger-soft);
+            border:1px solid rgba(241,102,95,0.35);
+            color:#ffb4af;
+            font-size:0.85rem;
+            padding:0.75rem 0.9rem;
+            border-radius:9px;
+            margin-bottom:1rem;
+        }
+        .alert::before{
+            content:"!";
+            flex-shrink:0;
+            width:16px; height:16px;
+            border-radius:50%;
+            background:var(--danger);
+            color:#1a0605;
+            font-family:var(--font-mono);
+            font-weight:700;
+            font-size:0.7rem;
+            display:flex; align-items:center; justify-content:center;
+            margin-top:0.05rem;
+        }
+
+        /* Form fields */
+        .field{margin-bottom:1.15rem;}
+        .field label{
+            display:block;
+            font-size:0.78rem;
+            font-family:var(--font-mono);
+            color:var(--text-faint);
+            letter-spacing:0.02em;
+            margin-bottom:0.45rem;
+        }
+        .field input{
+            width:100%;
+            background:var(--bg-soft);
+            border:1px solid var(--border-strong);
+            color:var(--text-main);
+            font-family:var(--font-body);
+            font-size:0.95rem;
+            padding:0.7rem 0.85rem;
+            border-radius:9px;
+            transition:border-color 0.18s, box-shadow 0.18s;
+        }
+        .field input::placeholder{color:var(--text-faint);}
+        .field input:focus{
+            outline:none;
+            border-color:var(--accent-dim);
+            box-shadow:0 0 0 3px var(--accent-soft);
+        }
+
+        .btn-submit{
+            width:100%;
+            display:flex; align-items:center; justify-content:center; gap:0.5rem;
+            background:var(--accent);
+            color:#1a1305;
+            border:none;
+            font-family:var(--font-body);
+            font-weight:600;
+            font-size:0.95rem;
+            padding:0.8rem 1rem;
+            border-radius:9px;
+            cursor:pointer;
+            box-shadow:0 6px 18px -6px rgba(232,163,61,0.55);
+            transition:transform 0.18s cubic-bezier(.4,0,.2,1), background-color 0.18s;
+            margin-top:0.25rem;
+        }
+        .btn-submit:hover{background:#f0ad4d; transform:translateY(-1px);}
+        .btn-submit:active{transform:translateY(0);}
+
+        .divider{
+            display:flex; align-items:center; gap:0.75rem;
+            margin:1.5rem 0 1.1rem;
+            color:var(--text-faint);
+            font-size:0.75rem;
+            font-family:var(--font-mono);
+        }
+        .divider::before,.divider::after{
+            content:"";
+            flex:1;
+            height:1px;
+            background:var(--border);
+        }
+
+        .register-row{
+            text-align:center;
+            font-size:0.88rem;
+            color:var(--text-muted);
+        }
+        .register-row a{
+            color:var(--accent);
+            font-weight:600;
+            border-bottom:1px solid var(--accent-dim);
+            padding-bottom:1px;
+            transition:color 0.18s, border-color 0.18s;
+        }
+        .register-row a:hover{color:#f0ad4d; border-color:#f0ad4d;}
+
+        .footnote{
+            text-align:center;
+            color:var(--text-faint);
+            font-size:0.76rem;
+            margin-top:1.5rem;
+            font-family:var(--font-mono);
+        }
+    </style>
 </head>
 
-<body class="bg-light">
+<body>
 
-<div class="container mt-5" style="max-width:500px;">
+<div class="auth-shell">
 
-<h2 class="mb-4 text-center">Login</h2>
+    <div class="brand"><span class="mark">AF</span> AssetFlow</div>
 
-{% if messages %}
-    {% for message in messages %}
-        <div class="alert alert-danger">
-            {{ message }}
+    <div class="tag-card">
+
+        <div class="tag-head">
+            <div class="eyebrow"><span class="dot"></span> SECURE ACCESS</div>
+            <h2>Welcome back</h2>
+            <p>Sign in to view what's allocated, booked and in progress.</p>
         </div>
-    {% endfor %}
-{% endif %}
 
-<form method="POST">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
 
-{% csrf_token %}
+        <form method="POST">
 
-<div class="mb-3">
-<label>Username</label>
-<input
-type="text"
-name="username"
-class="form-control"
-required>
-</div>
+            {% csrf_token %}
 
-<div class="mb-3">
-<label>Password</label>
-<input
-type="password"
-name="password"
-class="form-control"
-required>
-</div>
+            <div class="field">
+                <label for="username">Username</label>
+                <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    placeholder="your.username"
+                    required>
+            </div>
 
-<button class="btn btn-primary w-100">
-Login
-</button>
+            <div class="field">
+                <label for="password">Password</label>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="••••••••"
+                    required>
+            </div>
 
-</form>
+            <button type="submit" class="btn-submit">Login</button>
 
-<div class="text-center mt-3">
-Don't have an account?
-<a href="{% url 'register' %}">
-Register
-</a>
-</div>
+        </form>
+
+        <div class="divider">NEW HERE</div>
+
+        <div class="register-row">
+            Don't have an account?
+            <a href="{% url 'register' %}">Register</a>
+        </div>
+
+    </div>
+
+    <div class="footnote">AF-LOGIN · asset &amp; operations ERP</div>
 
 </div>
 

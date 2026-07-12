@@ -1,15 +1,749 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>AssetFlow</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AssetFlow — Asset & Operations ERP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b1220;
+    --bg-soft:#0e1729;
+    --surface:#121c30;
+    --surface-2:#182236;
+    --border:rgba(232,237,245,0.08);
+    --border-strong:rgba(232,237,245,0.16);
+    --text-main:#e9edf5;
+    --text-muted:#8c96ab;
+    --text-faint:#5c6478;
+    --accent:#e8a33d;
+    --accent-soft:rgba(232,163,61,0.14);
+    --accent-dim:rgba(232,163,61,0.35);
+    --ok:#34d399;
+    --ok-soft:rgba(52,211,153,0.14);
+    --danger:#f1665f;
+    --danger-soft:rgba(241,102,95,0.14);
+    --radius:14px;
+    --font-display:'Space Grotesk', system-ui, sans-serif;
+    --font-body:'Inter', system-ui, sans-serif;
+    --font-mono:'JetBrains Mono', ui-monospace, monospace;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    background:
+      radial-gradient(1200px 600px at 85% -10%, rgba(232,163,61,0.09), transparent 60%),
+      radial-gradient(900px 500px at 5% 10%, rgba(52,211,153,0.06), transparent 55%),
+      var(--bg);
+    color:var(--text-main);
+    font-family:var(--font-body);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  a{color:inherit; text-decoration:none;}
+  ul{list-style:none;}
+  img,svg{display:block; max-width:100%;}
+
+  .wrap{
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 1.5rem;
+  }
+
+  :focus-visible{
+    outline:2px solid var(--accent);
+    outline-offset:3px;
+    border-radius:4px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+
+  /* ---------- Buttons (paths preserved) ---------- */
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:0.5rem;
+    padding:0.75rem 1.35rem;
+    border-radius:9px;
+    font-weight:600;
+    font-size:0.92rem;
+    font-family:var(--font-body);
+    border:1px solid transparent;
+    cursor:pointer;
+    transition:transform 0.18s cubic-bezier(.4,0,.2,1), background-color 0.18s, border-color 0.18s, box-shadow 0.18s;
+    white-space:nowrap;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn:active{transform:translateY(0);}
+
+  a[href="/login/"]{
+    background:var(--accent);
+    color:#1a1305;
+    box-shadow:0 6px 18px -6px rgba(232,163,61,0.55);
+  }
+  a[href="/login/"]:hover{background:#f0ad4d;}
+
+  a[href="/register/"]{
+    background:transparent;
+    color:var(--text-main);
+    border:1px solid var(--border-strong);
+  }
+  a[href="/register/"]:hover{background:var(--surface-2); border-color:var(--text-faint);}
+
+  .btn-ghost{
+    background:transparent;
+    color:var(--text-muted);
+    border:1px solid transparent;
+    padding:0.6rem 0.9rem;
+    font-size:0.9rem;
+  }
+  .btn-ghost:hover{color:var(--text-main);}
+
+  /* ---------- Nav ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(11,18,32,0.78);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:1rem 0;
+  }
+  .brand{
+    display:flex; align-items:center; gap:0.65rem;
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:1.05rem;
+    letter-spacing:-0.01em;
+  }
+  .brand .mark{
+    width:34px; height:34px;
+    border-radius:8px;
+    background:linear-gradient(145deg, var(--accent), #b97a1f);
+    color:#1a1305;
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-mono);
+    font-weight:600;
+    font-size:0.8rem;
+  }
+  .nav-links{
+    display:flex; align-items:center; gap:1.75rem;
+  }
+  .nav-links .nav-items{
+    display:flex; gap:1.75rem;
+    font-size:0.9rem;
+    color:var(--text-muted);
+  }
+  .nav-links .nav-items a:hover{color:var(--text-main);}
+  .nav-cta{display:flex; gap:0.65rem;}
+  .nav-items,.nav-cta a[href="/register/"]{display:none;}
+  @media (min-width:760px){
+    .nav-items{display:flex;}
+    .nav-cta a[href="/register/"]{display:inline-flex;}
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    padding:4.5rem 0 3.5rem;
+  }
+  .hero-grid{
+    display:grid;
+    gap:2.5rem;
+    align-items:center;
+    grid-template-columns:1fr;
+  }
+  @media (min-width:900px){
+    .hero-grid{grid-template-columns:1.05fr 0.95fr; gap:2rem;}
+  }
+
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:0.5rem;
+    font-family:var(--font-mono);
+    font-size:0.72rem;
+    letter-spacing:0.06em;
+    color:var(--accent);
+    background:var(--accent-soft);
+    border:1px solid var(--accent-dim);
+    padding:0.35rem 0.7rem;
+    border-radius:999px;
+    margin-bottom:1.25rem;
+  }
+  .eyebrow .dot{
+    width:6px; height:6px; border-radius:50%;
+    background:var(--ok);
+    box-shadow:0 0 0 3px var(--ok-soft);
+  }
+
+  h1{
+    font-family:var(--font-display);
+    font-weight:700;
+    letter-spacing:-0.03em;
+    font-size:clamp(2.1rem, 4.6vw, 3.4rem);
+    line-height:1.06;
+    margin-bottom:1.1rem;
+  }
+  h1 em{
+    font-style:normal;
+    color:var(--accent);
+  }
+
+  .hero p.lede{
+    color:var(--text-muted);
+    font-size:1.05rem;
+    max-width:44ch;
+    margin-bottom:2rem;
+  }
+
+  .cta-row{display:flex; gap:0.75rem; flex-wrap:wrap; margin-bottom:1.75rem;}
+  .cta-row .btn{padding:0.85rem 1.5rem; font-size:0.95rem;}
+
+  .trust-row{
+    display:flex; align-items:center; gap:1.25rem;
+    color:var(--text-faint);
+    font-size:0.82rem;
+    flex-wrap:wrap;
+  }
+  .trust-row span{display:flex; align-items:center; gap:0.4rem;}
+  .trust-row svg{width:14px; height:14px; stroke:var(--text-faint);}
+
+  /* ---------- Tag card (signature element) ---------- */
+  .tag-card{
+    position:relative;
+    background:var(--surface);
+    border:1px solid var(--border-strong);
+    border-radius:var(--radius);
+    padding:1.5rem 1.5rem 1.75rem;
+    box-shadow:0 30px 60px -30px rgba(0,0,0,0.6);
+    overflow:hidden;
+  }
+  .tag-card::before{
+    content:"";
+    position:absolute;
+    left:-9px; top:0; bottom:0; width:18px;
+    background-image:radial-gradient(circle, var(--bg) 5px, transparent 5.5px);
+    background-size:18px 22px;
+    background-repeat:repeat-y;
+  }
+  .tag-card::after{
+    content:"";
+    position:absolute;
+    right:-9px; top:0; bottom:0; width:18px;
+    background-image:radial-gradient(circle, var(--bg) 5px, transparent 5.5px);
+    background-size:18px 22px;
+    background-repeat:repeat-y;
+  }
+  .tag-head{
+    display:flex; justify-content:space-between; align-items:flex-start;
+    margin-bottom:1.25rem;
+    padding-bottom:1rem;
+    border-bottom:1px dashed var(--border-strong);
+  }
+  .tag-id{
+    font-family:var(--font-mono);
+    font-size:1.35rem;
+    font-weight:600;
+    letter-spacing:0.01em;
+  }
+  .tag-sub{
+    font-family:var(--font-mono);
+    font-size:0.72rem;
+    color:var(--text-faint);
+    margin-top:0.2rem;
+  }
+  .status-pill{
+    font-family:var(--font-mono);
+    font-size:0.72rem;
+    padding:0.3rem 0.6rem;
+    border-radius:999px;
+    border:1px solid;
+  }
+  .status-pill.live{
+    animation:statusCycle 6s infinite;
+  }
+  @keyframes statusCycle{
+    0%,28%{ color:var(--ok); background:var(--ok-soft); border-color:rgba(52,211,153,0.4); }
+    33%,61%{ color:var(--accent); background:var(--accent-soft); border-color:var(--accent-dim); }
+    66%,94%{ color:var(--danger); background:var(--danger-soft); border-color:rgba(241,102,95,0.4);}
+    100%{ color:var(--ok); background:var(--ok-soft); border-color:rgba(52,211,153,0.4);}
+  }
+  .status-pill.live::before{content:"Available";}
+  @keyframes swapText{ 0%{opacity:1} 100%{opacity:1} }
+
+  .tag-rows{display:grid; gap:0.65rem; margin-bottom:1.25rem;}
+  .tag-row{
+    display:flex; justify-content:space-between;
+    font-size:0.85rem;
+  }
+  .tag-row .k{color:var(--text-faint);}
+  .tag-row .v{font-family:var(--font-mono); font-size:0.82rem; color:var(--text-main);}
+
+  .tag-log{
+    background:var(--bg-soft);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:0.85rem 0.9rem;
+    font-family:var(--font-mono);
+    font-size:0.75rem;
+    color:var(--text-muted);
+    display:grid;
+    gap:0.4rem;
+  }
+  .tag-log .line{display:flex; gap:0.5rem;}
+  .tag-log .line .t{color:var(--text-faint); flex-shrink:0;}
+
+  /* ---------- Ticker ---------- */
+  .ticker-wrap{
+    border-top:1px solid var(--border);
+    border-bottom:1px solid var(--border);
+    background:var(--bg-soft);
+    overflow:hidden;
+    padding:0.75rem 0;
+  }
+  .ticker{
+    display:flex;
+    gap:2.5rem;
+    white-space:nowrap;
+    font-family:var(--font-mono);
+    font-size:0.78rem;
+    color:var(--text-faint);
+    animation:scrollTicker 32s linear infinite;
+    width:max-content;
+  }
+  .ticker span{color:var(--text-muted);}
+  @keyframes scrollTicker{
+    from{transform:translateX(0);}
+    to{transform:translateX(-50%);}
+  }
+
+  /* ---------- Section shell ---------- */
+  section{padding:5rem 0;}
+  .section-head{
+    max-width:640px;
+    margin-bottom:2.75rem;
+  }
+  .section-head .eyebrow{margin-bottom:1rem;}
+  .section-head h2{
+    font-family:var(--font-display);
+    font-weight:700;
+    letter-spacing:-0.02em;
+    font-size:clamp(1.6rem, 3vw, 2.15rem);
+    margin-bottom:0.75rem;
+  }
+  .section-head p{color:var(--text-muted); font-size:1rem;}
+
+  /* ---------- Stats ---------- */
+  .stats{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:1px;
+    background:var(--border);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    overflow:hidden;
+  }
+  @media (min-width:760px){ .stats{grid-template-columns:repeat(4,1fr);} }
+  .stat{
+    background:var(--surface);
+    padding:1.75rem 1.5rem;
+  }
+  .stat .num{
+    font-family:var(--font-display);
+    font-size:2rem;
+    font-weight:700;
+    color:var(--accent);
+  }
+  .stat .lbl{color:var(--text-muted); font-size:0.85rem; margin-top:0.25rem;}
+
+  /* ---------- Feature grid ---------- */
+  .grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:1rem;
+  }
+  @media (min-width:700px){ .grid{grid-template-columns:repeat(2,1fr);} }
+  @media (min-width:1020px){ .grid{grid-template-columns:repeat(3,1fr);} }
+
+  .card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:1.5rem;
+    transition:border-color 0.2s, transform 0.2s;
+  }
+  .card:hover{border-color:var(--border-strong); transform:translateY(-2px);}
+  .card .code{
+    font-family:var(--font-mono);
+    font-size:0.7rem;
+    color:var(--accent);
+    letter-spacing:0.05em;
+    margin-bottom:0.9rem;
+    display:inline-block;
+    background:var(--accent-soft);
+    border:1px solid var(--accent-dim);
+    padding:0.2rem 0.5rem;
+    border-radius:5px;
+  }
+  .card h3{
+    font-family:var(--font-display);
+    font-size:1.05rem;
+    font-weight:600;
+    margin-bottom:0.5rem;
+  }
+  .card p{color:var(--text-muted); font-size:0.9rem;}
+
+  /* ---------- Conflict showcase ---------- */
+  .showcase{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:2rem;
+    display:grid;
+    gap:1.5rem;
+  }
+  @media (min-width:860px){ .showcase{grid-template-columns:1fr 1fr; align-items:center; padding:2.5rem;} }
+  .showcase-copy h3{
+    font-family:var(--font-display);
+    font-size:1.4rem;
+    margin-bottom:0.75rem;
+    letter-spacing:-0.01em;
+  }
+  .showcase-copy p{color:var(--text-muted); margin-bottom:1rem;}
+  .showcase-copy ul{display:grid; gap:0.5rem;}
+  .showcase-copy li{
+    display:flex; gap:0.6rem; align-items:flex-start;
+    font-size:0.9rem; color:var(--text-muted);
+  }
+  .showcase-copy li .chk{
+    color:var(--ok); font-family:var(--font-mono); flex-shrink:0; margin-top:0.1rem;
+  }
+
+  .demo-panel{
+    background:var(--bg-soft);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:1.25rem;
+    font-family:var(--font-mono);
+    font-size:0.82rem;
+  }
+  .demo-line{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:0.6rem 0;
+    border-bottom:1px solid var(--border);
+  }
+  .demo-line:last-child{border-bottom:none;}
+  .demo-tag{color:var(--text-main);}
+  .demo-badge{
+    padding:0.2rem 0.55rem;
+    border-radius:999px;
+    font-size:0.72rem;
+  }
+  .demo-badge.blocked{background:var(--danger-soft); color:var(--danger); border:1px solid rgba(241,102,95,0.35);}
+  .demo-badge.action{background:var(--accent-soft); color:var(--accent); border:1px solid var(--accent-dim);}
+  .demo-note{color:var(--text-faint); font-size:0.76rem; margin-top:0.9rem; line-height:1.5;}
+
+  /* ---------- Roles ---------- */
+  .roles{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:1px;
+    background:var(--border);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    overflow:hidden;
+  }
+  @media (min-width:760px){ .roles{grid-template-columns:repeat(4,1fr);} }
+  .role{
+    background:var(--surface);
+    padding:1.75rem 1.5rem;
+  }
+  .role .rn{
+    font-family:var(--font-mono);
+    font-size:0.72rem;
+    color:var(--text-faint);
+    margin-bottom:0.6rem;
+  }
+  .role h4{font-family:var(--font-display); font-size:1.02rem; margin-bottom:0.5rem;}
+  .role p{color:var(--text-muted); font-size:0.85rem;}
+
+  /* ---------- CTA banner ---------- */
+  .cta-banner{
+    background:linear-gradient(135deg, var(--surface), var(--surface-2));
+    border:1px solid var(--border-strong);
+    border-radius:var(--radius);
+    padding:3rem 2rem;
+    text-align:center;
+  }
+  .cta-banner h2{
+    font-family:var(--font-display);
+    font-size:clamp(1.5rem, 3vw, 2rem);
+    margin-bottom:0.75rem;
+    letter-spacing:-0.02em;
+  }
+  .cta-banner p{color:var(--text-muted); margin-bottom:1.75rem;}
+  .cta-banner .cta-row{justify-content:center;}
+
+  /* ---------- Footer ---------- */
+  footer{
+    border-top:1px solid var(--border);
+    padding:2.5rem 0;
+  }
+  .footer-row{
+    display:flex; flex-direction:column; gap:1rem;
+    align-items:flex-start;
+  }
+  @media (min-width:700px){
+    .footer-row{flex-direction:row; justify-content:space-between; align-items:center;}
+  }
+  .footer-row .brand{font-size:0.95rem;}
+  footer .fine{color:var(--text-faint); font-size:0.8rem;}
+</style>
 </head>
 <body>
 
-<h1>Welcome to AssetFlow ERP</h1>
+<header>
+  <div class="wrap nav">
+    <div class="brand"><span class="mark">AF</span> AssetFlow</div>
+    <div class="nav-links">
+      <div class="nav-items">
+        <a href="#modules">Modules</a>
+        <a href="#how-it-works">How it works</a>
+        <a href="#roles">Roles</a>
+      </div>
+      <div class="nav-cta">
+        <a href="/register/" class="btn">Register</a>
+        <a href="/login/" class="btn">Login</a>
+      </div>
+    </div>
+  </div>
+</header>
 
-<a href="/login/">Login</a>
-<br>
-<a href="/register/">Register</a>
+<main>
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow"><span class="dot"></span> ASSET TAG AF-0001 · SYSTEM ONLINE</div>
+        <h1>One tag. One owner. <em>Zero conflicts.</em></h1>
+        <p class="lede">AssetFlow is the operations ERP that tracks every asset, booking and repair ticket your organization owns — and refuses to let two people hold the same laptop at once.</p>
+        <div class="cta-row">
+          <a href="/login/" class="btn">Login to dashboard</a>
+          <a href="/register/" class="btn">Create an account</a>
+        </div>
+        <div class="trust-row">
+          <span><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg> Role-based access</span>
+          <span><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg> Full audit trail</span>
+          <span><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg> Real-time status</span>
+        </div>
+      </div>
+
+      <div class="tag-card">
+        <div class="tag-head">
+          <div>
+            <div class="tag-id">AF&#8209;0114</div>
+            <div class="tag-sub">Dell Latitude · Engineering</div>
+          </div>
+          <div class="status-pill live"></div>
+        </div>
+        <div class="tag-rows">
+          <div class="tag-row"><span class="k">Held by</span><span class="v">Priya Shah</span></div>
+          <div class="tag-row"><span class="k">Category</span><span class="v">Electronics</span></div>
+          <div class="tag-row"><span class="k">Expected return</span><span class="v">18 Jul 2026</span></div>
+          <div class="tag-row"><span class="k">Requested by</span><span class="v">Raj Mehta</span></div>
+        </div>
+        <div class="tag-log">
+          <div class="line"><span class="t">09:14</span> allocated → Priya Shah, Engineering</div>
+          <div class="line"><span class="t">10:02</span> transfer requested by Raj Mehta</div>
+          <div class="line"><span class="t">10:02</span> conflict blocked — asset already held</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="ticker-wrap" aria-hidden="true">
+    <div class="ticker">
+      <span>Laptop AF-0114 assigned to Priya Shah</span>
+      · Room B2 booking confirmed 2:00–3:00 PM
+      · Projector AF-0062 maintenance resolved
+      · Transfer approved: AF-0033 → Facilities dept
+      · Overdue return flagged: AF-0021, 3 days
+      · Audit discrepancy: AF-0088 marked damaged
+      <span>Laptop AF-0114 assigned to Priya Shah</span>
+      · Room B2 booking confirmed 2:00–3:00 PM
+      · Projector AF-0062 maintenance resolved
+      · Transfer approved: AF-0033 → Facilities dept
+      · Overdue return flagged: AF-0021, 3 days
+      · Audit discrepancy: AF-0088 marked damaged
+    </div>
+  </div>
+
+  <section id="modules">
+    <div class="wrap">
+      <div class="stats">
+        <div class="stat"><div class="num">10</div><div class="lbl">operational modules</div></div>
+        <div class="stat"><div class="num">4</div><div class="lbl">defined roles</div></div>
+        <div class="stat"><div class="num">0</div><div class="lbl">double allocations allowed</div></div>
+        <div class="stat"><div class="num">24/7</div><div class="lbl">live status tracking</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow"><span class="dot"></span> WHAT'S INSIDE</div>
+        <h2>Every stage of an asset's life, in one place</h2>
+        <p>From the moment a laptop is tagged to the day it's retired, AssetFlow keeps a single, trustworthy record — so nobody has to ask "who has this right now?" in a hallway.</p>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <span class="code">AF-DASH</span>
+          <h3>Dashboard</h3>
+          <p>Live KPI cards for available, allocated and overdue assets, plus one-tap actions to register, book or raise a request.</p>
+        </div>
+        <div class="card">
+          <span class="code">AF-ORG</span>
+          <h3>Organization setup</h3>
+          <p>Admins manage departments, asset categories and the employee directory — the only place roles get assigned.</p>
+        </div>
+        <div class="card">
+          <span class="code">AF-REG</span>
+          <h3>Asset registry</h3>
+          <p>Auto-tagged assets (AF-0001, AF-0002…) searchable by tag, serial number, category, status or location.</p>
+        </div>
+        <div class="card">
+          <span class="code">AF-ALLOC</span>
+          <h3>Allocation & transfer</h3>
+          <p>Assign an asset to a person or department, with a built-in rule that blocks double allocation and offers a transfer instead.</p>
+        </div>
+        <div class="card">
+          <span class="code">AF-BOOK</span>
+          <h3>Resource booking</h3>
+          <p>Calendar-based booking for shared rooms and equipment, with automatic overlap rejection.</p>
+        </div>
+        <div class="card">
+          <span class="code">AF-MAINT</span>
+          <h3>Maintenance</h3>
+          <p>Repair requests move through Pending → Approved → Assigned → In Progress → Resolved, updating asset status automatically.</p>
+        </div>
+        <div class="card">
+          <span class="code">AF-AUDIT</span>
+          <h3>Asset audit</h3>
+          <p>Run scheduled verification cycles; auditors mark items Verified, Missing or Damaged, with discrepancies flagged automatically.</p>
+        </div>
+        <div class="card">
+          <span class="code">AF-RPT</span>
+          <h3>Reports & analytics</h3>
+          <p>Utilization trends, maintenance frequency and booking heatmaps, exportable for leadership review.</p>
+        </div>
+        <div class="card">
+          <span class="code">AF-LOG</span>
+          <h3>Activity & notifications</h3>
+          <p>Every allocation, approval and overdue return lands in a searchable, timestamped log — nothing happens off the record.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="how-it-works">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow"><span class="dot"></span> THE CORE RULE</div>
+        <h2>You can't allocate what's already taken</h2>
+        <p>This is the rule the rest of the system is built around — every allocation attempt is checked against current holders before it's approved.</p>
+      </div>
+
+      <div class="showcase">
+        <div class="showcase-copy">
+          <h3>Conflict-aware allocation</h3>
+          <p>Priya already holds Laptop AF-0114. When Raj tries to claim the same asset, AssetFlow blocks the request, shows exactly who holds it, and offers a transfer instead of a silent failure.</p>
+          <ul>
+            <li><span class="chk">✓</span> Current holder shown immediately, no guessing</li>
+            <li><span class="chk">✓</span> Transfer requests route through Approved → Re-allocated</li>
+            <li><span class="chk">✓</span> Allocation history kept per asset, forever</li>
+          </ul>
+        </div>
+        <div class="demo-panel">
+          <div class="demo-line">
+            <span class="demo-tag">AF-0114 · Priya Shah</span>
+            <span class="demo-badge blocked">held</span>
+          </div>
+          <div class="demo-line">
+            <span class="demo-tag">Raj Mehta requests AF-0114</span>
+            <span class="demo-badge blocked">blocked</span>
+          </div>
+          <div class="demo-line">
+            <span class="demo-tag">Transfer request → Priya's manager</span>
+            <span class="demo-badge action">pending</span>
+          </div>
+          <div class="demo-note">Same logic applies to room and equipment bookings: a 9:30–10:30 request against an existing 9:00–10:00 hold is rejected; a 10:00 request is accepted.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="roles">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow"><span class="dot"></span> ACCESS MODEL</div>
+        <h2>Built for how your organization actually works</h2>
+        <p>Every account starts as an employee. Admins promote people to Department Head or Asset Manager — roles are never self-assigned.</p>
+      </div>
+
+      <div class="roles">
+        <div class="role">
+          <div class="rn">ROLE / 01</div>
+          <h4>Admin</h4>
+          <p>Owns departments, categories and role assignment. The only one who can promote employees.</p>
+        </div>
+        <div class="role">
+          <div class="rn">ROLE / 02</div>
+          <h4>Asset Manager</h4>
+          <p>Approves transfers, maintenance requests and audit closures across their assigned scope.</p>
+        </div>
+        <div class="role">
+          <div class="rn">ROLE / 03</div>
+          <h4>Department Head</h4>
+          <p>Reviews allocations and returns for their department, and signs off on transfer requests.</p>
+        </div>
+        <div class="role">
+          <div class="rn">ROLE / 04</div>
+          <h4>Employee</h4>
+          <p>Books resources, raises maintenance requests, and tracks what's currently assigned to them.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="cta-banner">
+        <h2>Your assets, accounted for.</h2>
+        <p>Sign in to your dashboard, or create an employee account to get started.</p>
+        <div class="cta-row">
+          <a href="/login/" class="btn">Login</a>
+          <a href="/register/" class="btn">Register</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap footer-row">
+    <div class="brand"><span class="mark">AF</span> AssetFlow</div>
+    <div class="fine">Asset, allocation & operations ERP · Built for internal use</div>
+  </div>
+</footer>
 
 </body>
 </html>

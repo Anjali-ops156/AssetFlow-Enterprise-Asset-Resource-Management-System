@@ -2,179 +2,319 @@
 
 {% block title %}Dashboard{% endblock %}
 
+{% block extra_head %}
+<style>
+    /* ---------- Page header ---------- */
+    .page-head{
+        display:flex;
+        align-items:flex-start;
+        justify-content:space-between;
+        flex-wrap:wrap;
+        gap:1rem;
+        margin-bottom:2rem;
+    }
+    .page-head .eyebrow{
+        display:inline-flex; align-items:center; gap:0.5rem;
+        font-family:var(--font-mono);
+        font-size:0.7rem;
+        letter-spacing:0.06em;
+        color:var(--accent);
+        background:var(--accent-soft);
+        border:1px solid var(--accent-dim);
+        padding:0.3rem 0.65rem;
+        border-radius:999px;
+        margin-bottom:0.75rem;
+    }
+    .page-head .eyebrow .dot{
+        width:6px; height:6px; border-radius:50%;
+        background:var(--ok);
+        box-shadow:0 0 0 3px var(--ok-soft);
+    }
+    .page-head h2{
+        font-size:1.65rem;
+        font-weight:700;
+        margin:0;
+    }
+    .page-head p{
+        color:var(--text-muted);
+        font-size:0.92rem;
+        margin-top:0.35rem;
+    }
+
+    /* ---------- KPI grid ---------- */
+    .kpi-grid{
+        display:grid;
+        grid-template-columns:repeat(2, 1fr);
+        gap:1rem;
+        margin-bottom:1.5rem;
+    }
+    @media (min-width:700px){
+        .kpi-grid{grid-template-columns:repeat(4, 1fr);}
+    }
+
+    .kpi-card{
+        background:var(--surface);
+        border:1px solid var(--border);
+        border-radius:var(--radius);
+        padding:1.35rem 1.4rem;
+        display:flex;
+        flex-direction:column;
+        gap:0.9rem;
+        transition:transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .kpi-card:hover{
+        transform:translateY(-3px);
+        border-color:var(--border-strong);
+        box-shadow:0 18px 34px -22px rgba(0,0,0,0.65);
+    }
+
+    .kpi-top{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+    }
+    .kpi-icon{
+        width:36px; height:36px;
+        border-radius:9px;
+        display:flex; align-items:center; justify-content:center;
+        flex-shrink:0;
+    }
+    .kpi-icon svg{width:18px; height:18px; stroke:currentColor;}
+
+    .kpi-icon.total{ background:var(--surface-2); color:var(--text-muted); }
+    .kpi-icon.available{ background:var(--ok-soft); color:var(--ok); }
+    .kpi-icon.allocated{ background:var(--accent-soft); color:var(--accent); }
+    .kpi-icon.maintenance{ background:var(--danger-soft); color:var(--danger); }
+
+    .kpi-label{
+        font-family:var(--font-mono);
+        font-size:0.72rem;
+        letter-spacing:0.03em;
+        color:var(--text-faint);
+        text-transform:uppercase;
+    }
+    .kpi-value{
+        font-family:var(--font-display);
+        font-size:2.1rem;
+        font-weight:700;
+        line-height:1;
+        letter-spacing:-0.02em;
+    }
+
+    /* ---------- Section cards ---------- */
+    .section-card{
+        margin-bottom:1.5rem;
+        overflow:hidden;
+    }
+    .section-card .card-head{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        padding:1.1rem 1.4rem;
+        border-bottom:1px solid var(--border);
+    }
+    .section-card .card-head h3{
+        font-size:1rem;
+        font-weight:600;
+        margin:0;
+    }
+    .section-card .card-head .tag{
+        font-family:var(--font-mono);
+        font-size:0.68rem;
+        color:var(--accent);
+        background:var(--accent-soft);
+        border:1px solid var(--accent-dim);
+        padding:0.2rem 0.55rem;
+        border-radius:5px;
+    }
+    .section-card .card-body{
+        padding:1.4rem;
+    }
+
+    /* ---------- Table ---------- */
+    .status-table{ box-shadow:none; }
+    .status-table td.num{
+        font-family:var(--font-mono);
+        color:var(--text-main);
+        font-weight:500;
+    }
+    .status-table tr.total td{
+        color:var(--accent);
+        font-weight:600;
+    }
+    .status-dot{
+        display:inline-block;
+        width:8px; height:8px;
+        border-radius:50%;
+        margin-right:0.55rem;
+        vertical-align:middle;
+    }
+    .status-dot.available{background:var(--ok);}
+    .status-dot.allocated{background:var(--accent);}
+    .status-dot.maintenance{background:var(--danger);}
+    .status-dot.total{background:var(--text-faint);}
+</style>
+{% endblock %}
+
 {% block content %}
 
-<h2 class="mb-4">ERP Dashboard</h2>
+<div class="page-head">
+    <div>
+        <div class="eyebrow"><span class="dot"></span> LIVE OVERVIEW</div>
+        <h2>ERP Dashboard</h2>
+        <p>Real-time snapshot of every tagged asset across the organization.</p>
+    </div>
+</div>
 
-<div class="row g-4">
+<div class="kpi-grid">
 
-    <div class="col-md-3">
-        <div class="card shadow border-0">
-            <div class="card-body text-center">
-                <h6>Total Assets</h6>
-                <h2>{{ total_assets }}</h2>
+    <div class="kpi-card">
+        <div class="kpi-top">
+            <span class="kpi-label">Total Assets</span>
+            <div class="kpi-icon total">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="1.5"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
             </div>
         </div>
+        <div class="kpi-value">{{ total_assets }}</div>
     </div>
 
-    <div class="col-md-3">
-        <div class="card shadow border-0">
-            <div class="card-body text-center">
-                <h6>Available</h6>
-                <h2>{{ available }}</h2>
+    <div class="kpi-card">
+        <div class="kpi-top">
+            <span class="kpi-label">Available</span>
+            <div class="kpi-icon available">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
             </div>
         </div>
+        <div class="kpi-value">{{ available }}</div>
     </div>
 
-    <div class="col-md-3">
-        <div class="card shadow border-0">
-            <div class="card-body text-center">
-                <h6>Allocated</h6>
-                <h2>{{ allocated }}</h2>
+    <div class="kpi-card">
+        <div class="kpi-top">
+            <span class="kpi-label">Allocated</span>
+            <div class="kpi-icon allocated">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"/></svg>
             </div>
         </div>
+        <div class="kpi-value">{{ allocated }}</div>
     </div>
 
-    <div class="col-md-3">
-        <div class="card shadow border-0">
-            <div class="card-body text-center">
-                <h6>Maintenance</h6>
-                <h2>{{ maintenance }}</h2>
+    <div class="kpi-card">
+        <div class="kpi-top">
+            <span class="kpi-label">Maintenance</span>
+            <div class="kpi-icon maintenance">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M14.7 6.3a4 4 0 0 1-5.4 5.4L4 17l3 3 5.3-5.3a4 4 0 0 1 5.4-5.4l-3-3-0z"/></svg>
             </div>
         </div>
+        <div class="kpi-value">{{ maintenance }}</div>
     </div>
 
 </div>
 
-<br>
-
-<div class="card shadow border-0">
-
-    <div class="card-header bg-primary text-white">
-        Asset Statistics
+<div class="card section-card">
+    <div class="card-head">
+        <h3>Asset Statistics</h3>
+        <span class="tag">AF-CHART</span>
     </div>
-
     <div class="card-body">
-
-        <canvas id="assetChart" height="100"></canvas>
-
+        <canvas id="assetChart" height="90"></canvas>
     </div>
-
 </div>
 
-<br>
-
-<div class="card shadow border-0">
-
-    <div class="card-header bg-dark text-white">
-        Asset Status Summary
+<div class="card section-card">
+    <div class="card-head">
+        <h3>Asset Status Summary</h3>
+        <span class="tag">AF-STATUS</span>
     </div>
-
-    <div class="card-body">
-
-        <table class="table table-striped">
-
+    <div class="card-body" style="padding:0;">
+        <table class="status-table">
             <thead>
-
-            <tr>
-                <th>Status</th>
-                <th>Total</th>
-            </tr>
-
+                <tr>
+                    <th>Status</th>
+                    <th>Total</th>
+                </tr>
             </thead>
-
             <tbody>
-
-            <tr>
-                <td>Available</td>
-                <td>{{ available }}</td>
-            </tr>
-
-            <tr>
-                <td>Allocated</td>
-                <td>{{ allocated }}</td>
-            </tr>
-
-            <tr>
-                <td>Under Maintenance</td>
-                <td>{{ maintenance }}</td>
-            </tr>
-
-            <tr>
-                <td>Total Assets</td>
-                <td>{{ total_assets }}</td>
-            </tr>
-
+                <tr>
+                    <td><span class="status-dot available"></span>Available</td>
+                    <td class="num">{{ available }}</td>
+                </tr>
+                <tr>
+                    <td><span class="status-dot allocated"></span>Allocated</td>
+                    <td class="num">{{ allocated }}</td>
+                </tr>
+                <tr>
+                    <td><span class="status-dot maintenance"></span>Under Maintenance</td>
+                    <td class="num">{{ maintenance }}</td>
+                </tr>
+                <tr class="total">
+                    <td><span class="status-dot total"></span>Total Assets</td>
+                    <td class="num">{{ total_assets }}</td>
+                </tr>
             </tbody>
-
         </table>
-
     </div>
-
 </div>
 
-<script>
+{% endblock %}
 
+{% block extra_scripts %}
+<script>
 document.addEventListener("DOMContentLoaded", function () {
 
-    const ctx = document.getElementById("assetChart");
+    var styles = getComputedStyle(document.documentElement);
+    var accent = styles.getPropertyValue('--accent').trim();
+    var ok = styles.getPropertyValue('--ok').trim();
+    var danger = styles.getPropertyValue('--danger').trim();
+    var textMuted = styles.getPropertyValue('--text-muted').trim();
+    var gridColor = styles.getPropertyValue('--border').trim();
+
+    var ctx = document.getElementById("assetChart");
 
     new Chart(ctx, {
-
         type: "bar",
-
         data: {
-
-            labels: [
-                "Available",
-                "Allocated",
-                "Maintenance"
-            ],
-
+            labels: ["Available", "Allocated", "Maintenance"],
             datasets: [{
-
                 label: "Assets",
-
                 data: [
                     {{ available }},
                     {{ allocated }},
                     {{ maintenance }}
-                ]
-
+                ],
+                backgroundColor: [ok, accent, danger],
+                borderRadius: 6,
+                maxBarThickness: 64
             }]
-
         },
-
         options: {
-
             responsive: true,
-
+            animation: { duration: 700, easing: 'easeOutQuart' },
             plugins: {
-
-                legend: {
-
-                    display: false
-
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: '#182236',
+                    titleColor: '#e9edf5',
+                    bodyColor: '#8c96ab',
+                    borderColor: 'rgba(232,237,245,0.16)',
+                    borderWidth: 1,
+                    padding: 10,
+                    displayColors: false
                 }
-
             },
-
             scales: {
-
                 y: {
-
-                    beginAtZero: true
-
+                    beginAtZero: true,
+                    ticks: { color: textMuted, font: { family: "'JetBrains Mono', monospace", size: 11 } },
+                    grid: { color: gridColor }
+                },
+                x: {
+                    ticks: { color: textMuted, font: { family: "'Inter', sans-serif", size: 12 } },
+                    grid: { display: false }
                 }
-
             }
-
         }
-
     });
 
 });
-
 </script>
-
 {% endblock %}
