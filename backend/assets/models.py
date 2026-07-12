@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from organization.models import Department, AssetCategory
 
 
@@ -72,3 +74,70 @@ class Asset(models.Model):
 
     def __str__(self):
         return f"{self.asset_tag} - {self.name}"
+
+
+class AssetAllocation(models.Model):
+
+    STATUS_CHOICES = [
+        ("Allocated", "Allocated"),
+        ("Returned", "Returned"),
+        ("Transfer Requested", "Transfer Requested"),
+    ]
+
+    asset = models.ForeignKey(
+        Asset,
+        on_delete=models.CASCADE
+    )
+
+    employee = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE
+    )
+
+    allocated_date = models.DateField(auto_now_add=True)
+
+    expected_return_date = models.DateField(
+        null=True,
+        blank=True
+    )
+
+    returned_date = models.DateField(
+        null=True,
+        blank=True
+    )
+
+    status = models.CharField(
+        max_length=30,
+        choices=STATUS_CHOICES,
+        default="Allocated"
+    )
+
+    condition_notes = models.TextField(blank=True)
+
+    def clean(self):
+        if self.status == "Allocated":
+            exists = AssetAllocation.objects.filter(
+                asset=self.asset,
+                status="Allocated"
+            ).exclude(id=self.id)
+
+            if exists.exists():
+                raise ValidationError(
+                    "This asset is already allocated."
+                )
+
+    def save(self, *args, **kwargs):
+        self.clean()
+
+        if self.status == "Allocated":
+            self.asset.status = "Allocated"
+
+        elif self.status == "Returned":
+            self.asset.status = "Available"
+
+        self.asset.save()
+
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.asset.asset_tag} → {self.employee.username}"
