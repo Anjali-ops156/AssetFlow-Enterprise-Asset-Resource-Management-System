@@ -1,3 +1,12 @@
 from django.shortcuts import render
+from .models import MaintenanceRequest
 
-# Create your views here.
+
+def maintenance_list(request):
+    requests = MaintenanceRequest.objects.all().order_by("-id")
+
+    return render(
+        request,
+        "maintenance/maintenance_list.html",
+        {"requests": requests},
+    )
